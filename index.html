@@ -475,6 +475,58 @@
     transition:transform 0.12s cubic-bezier(.2,1.8,.4,1);
   }
 
+  /* ---------- DIGITAL face ---------- */
+  .digital-face{
+    display:none;
+    position:absolute;
+    inset:0;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    z-index:4;
+  }
+
+  .watch.face-digital .digital-face{ display:flex; }
+
+  .watch.face-digital svg,
+  .watch.face-digital .emblem,
+  .watch.face-digital .date-window,
+  .watch.face-digital .hand,
+  .watch.face-digital .hand-shadow,
+  .watch.face-digital .hub{
+    display:none;
+  }
+
+  .df-time{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:clamp(26px, 9vmin, 46px);
+    letter-spacing:0.06em;
+    color:var(--teal);
+    text-shadow:0 0 12px var(--teal-glow);
+  }
+
+  .df-time .df-sec{
+    color:var(--magenta);
+    text-shadow:0 0 12px rgba(255,47,143,0.6);
+  }
+
+  .df-date{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:500;
+    font-size:clamp(10px, 2.6vmin, 13px);
+    letter-spacing:0.25em;
+    color:var(--ivory-dim);
+  }
+
+  .df-tz{
+    font-family:'JetBrains Mono', monospace;
+    font-size:clamp(8px, 2vmin, 10px);
+    letter-spacing:0.18em;
+    color:var(--magenta);
+  }
+
   @media (prefers-reduced-motion: reduce){
     .hand{ transition:none !important; }
   }
@@ -515,6 +567,12 @@
       <div class="hand hand-second" id="secondHand"></div>
       <div class="hub"></div>
       <div class="crystal-glare"></div>
+
+      <div class="digital-face">
+        <div class="df-time" id="dfTime">--<span class="df-sec">:--:--</span></div>
+        <div class="df-date" id="dfDate">MON 1</div>
+        <div class="df-tz" id="dfTz">LOCAL TIME</div>
+      </div>
     </div>
   </div>
 
@@ -529,6 +587,16 @@
     </div>
 
     <div class="settings-panel" id="settingsPanel">
+      <h2>WATCH FACE</h2>
+      <div class="settings-row">
+        <input type="radio" name="watchFace" id="faceSeiko" value="seiko">
+        <label for="faceSeiko">Seiko Miku</label>
+      </div>
+      <div class="settings-row">
+        <input type="radio" name="watchFace" id="faceDigital" value="digital">
+        <label for="faceDigital">Digital</label>
+      </div>
+
       <h2>APPEARANCE</h2>
       <div class="settings-row">
         <input type="radio" name="appearance" id="appearanceDark" value="dark">
@@ -651,6 +719,10 @@
   const showTimezoneCheck = document.getElementById('showTimezone');
   const mode39Check = document.getElementById('mode39');
   const tzReadout = document.getElementById('tzReadout');
+  const watchFaceRadios = document.querySelectorAll('input[name="watchFace"]');
+  const dfTime = document.getElementById('dfTime');
+  const dfDate = document.getElementById('dfDate');
+  const dfTz = document.getElementById('dfTz');
 
   function pad(n){ return n.toString().padStart(2,'0'); }
 
@@ -904,6 +976,10 @@
     tzOffset.textContent = offset;
     tzLabel.textContent = TZ_LABEL_MAP.get(tzSelect.value) || tzSelect.value;
 
+    dfTime.innerHTML = `${pad(h)}<span class="df-sec">:${pad(m)}:${pad(s)}</span>`;
+    dfDate.textContent = `${dow} ${dom}`;
+    dfTz.textContent = `${TZ_LABEL_MAP.get(tzSelect.value) || tzSelect.value} ${offset}`;
+
     requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
@@ -914,6 +990,15 @@
     const v = localStorage.getItem('miku-clock-' + key);
     return v === null ? fallback : v;
   }
+
+  function setWatchFace(face){
+    watchEl.classList.toggle('face-digital', face === 'digital');
+    saveSetting('watchFace', face);
+  }
+  const savedFace = loadSetting('watchFace', 'seiko');
+  document.getElementById(savedFace === 'digital' ? 'faceDigital' : 'faceSeiko').checked = true;
+  setWatchFace(savedFace);
+  watchFaceRadios.forEach(r => r.addEventListener('change', () => { if(r.checked) setWatchFace(r.value); }));
 
   function setAppearance(mode){
     watchEl.classList.toggle('night', mode === 'night');
