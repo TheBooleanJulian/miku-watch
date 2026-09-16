@@ -356,6 +356,33 @@
     background:#c7cbd1;
   }
 
+  body.light .capture-modal{
+    background:#ffffff;
+    border-color:#d5d8dc;
+  }
+
+  body.light .capture-aspects button{
+    background:#fff;
+    color:#6a6d72;
+    border-color:#c7cbd1;
+  }
+
+  body.light .capsule-item{
+    background:#f4f5f7;
+    border-color:#e0e2e6;
+  }
+
+  body.light .capsule-meta,
+  body.light .capsule-meta .capsule-date{
+    color:#2a2c30;
+  }
+
+  body.light .toast{
+    background:#fff;
+    color:#2a2c30;
+    border-color:var(--teal-dim);
+  }
+
   /* ---------- ambient display mode ---------- */
   body[data-ambient="ambient"]{
     transition:background 0.6s ease;
@@ -599,6 +626,236 @@
     transition:transform 0.12s cubic-bezier(.2,1.8,.4,1);
   }
 
+  /* ---------- collection / unlock system ---------- */
+  .settings-row.locked{
+    opacity:0.4;
+  }
+
+  .settings-row.locked label{
+    cursor:not-allowed;
+  }
+
+  .face-hint{
+    margin:-2px 0 4px 21px;
+    font-size:9.5px;
+    letter-spacing:0.02em;
+    color:var(--ivory-dim);
+  }
+
+  .collection-count{
+    color:var(--ivory-dim);
+    font-weight:400;
+    text-transform:none;
+    letter-spacing:0.05em;
+  }
+
+  .toast{
+    position:fixed;
+    left:50%;
+    bottom:28px;
+    transform:translate(-50%, 20px);
+    background:#0a0b0d;
+    border:1px solid var(--teal);
+    color:var(--ivory);
+    padding:10px 18px;
+    border-radius:6px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.05em;
+    box-shadow:0 8px 24px rgba(0,0,0,0.5), 0 0 12px var(--teal-glow);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.3s ease, transform 0.3s ease;
+    z-index:80;
+    text-align:center;
+  }
+
+  .toast.show{
+    opacity:1;
+    transform:translate(-50%, 0);
+  }
+
+  .toast strong{
+    color:var(--teal);
+  }
+
+  /* ---------- capture / share modal ---------- */
+  .capture-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.72);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:90;
+    padding:20px;
+  }
+
+  .capture-overlay.open{
+    display:flex;
+  }
+
+  .capture-modal{
+    background:#0a0b0d;
+    border:1px solid var(--teal-dim);
+    border-radius:10px;
+    padding:18px;
+    width:min(92vw, 360px);
+    max-height:90vh;
+    overflow-y:auto;
+    box-shadow:0 20px 50px rgba(0,0,0,0.7);
+  }
+
+  .capture-modal h3{
+    margin:0 0 12px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    color:var(--teal);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .capture-modal h3 button{
+    background:none;
+    border:none;
+    color:var(--ivory-dim);
+    font-size:16px;
+    cursor:pointer;
+    line-height:1;
+  }
+
+  .capture-preview{
+    width:100%;
+    border-radius:6px;
+    background:#000;
+    display:block;
+  }
+
+  .capture-aspects{
+    display:flex;
+    gap:6px;
+    margin:12px 0;
+    flex-wrap:wrap;
+  }
+
+  .capture-aspects button{
+    flex:1;
+    background:#000;
+    color:var(--ivory-dim);
+    border:1px solid var(--teal-dim);
+    border-radius:4px;
+    padding:6px 4px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    cursor:pointer;
+  }
+
+  .capture-aspects button.active{
+    color:var(--teal);
+    border-color:var(--teal);
+    box-shadow:0 0 4px var(--teal-glow);
+  }
+
+  .capture-download{
+    display:block;
+    width:100%;
+    text-align:center;
+    background:var(--teal-dim);
+    color:#04140f;
+    font-weight:700;
+    padding:9px;
+    border-radius:5px;
+    text-decoration:none;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+  }
+
+  /* ---------- time capsule ---------- */
+  .capsule-list{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    max-height:220px;
+    overflow-y:auto;
+    margin-top:6px;
+  }
+
+  .capsule-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#050506;
+    border:1px solid #1c1e22;
+    border-radius:5px;
+    padding:5px 7px;
+  }
+
+  .capsule-item img{
+    width:34px;
+    height:34px;
+    border-radius:4px;
+    object-fit:cover;
+    background:#000;
+  }
+
+  .capsule-meta{
+    flex:1;
+    min-width:0;
+    font-family:'JetBrains Mono', monospace;
+    font-size:9.5px;
+    color:var(--ivory-dim);
+    line-height:1.35;
+  }
+
+  .capsule-meta .capsule-date{
+    color:var(--ivory);
+    display:block;
+  }
+
+  .capsule-actions{
+    display:flex;
+    gap:4px;
+  }
+
+  .capsule-actions a,
+  .capsule-actions button{
+    background:none;
+    border:1px solid var(--teal-dim);
+    color:var(--ivory-dim);
+    border-radius:4px;
+    width:22px;
+    height:22px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    cursor:pointer;
+    text-decoration:none;
+  }
+
+  .capsule-empty{
+    font-size:10.5px;
+    color:var(--ivory-dim);
+    font-style:italic;
+  }
+
+  .capture-btn{
+    width:100%;
+    background:var(--magenta-dim);
+    color:#fff;
+    border:none;
+    padding:9px;
+    border-radius:5px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.08em;
+    cursor:pointer;
+    margin-top:4px;
+  }
+
   /* ---------- DIGITAL face ---------- */
   .digital-face{
     display:none;
@@ -649,6 +906,71 @@
     font-size:clamp(8px, 2vmin, 10px);
     letter-spacing:0.18em;
     color:var(--magenta);
+  }
+
+  /* ---------- collectible face styles (Watchmaker presets) ---------- */
+  /* each preset simply overrides the theme variables everything else already
+     reads from, so hands/ticks/hub/case/emblem retheme automatically */
+
+  .watch.face-cyan-circuit{
+    --teal:#00eaff;
+    --teal-dim:#0a6b78;
+    --teal-glow:rgba(0,234,255,0.45);
+    --magenta:#00eaff;
+    --magenta-dim:#0a6b78;
+    --case-hi:#12343a;
+    --case-mid:#081a1e;
+    --case-lo:#020506;
+    --dial:#020a0c;
+  }
+
+  .watch.face-cyan-circuit .dial{
+    background:
+      repeating-linear-gradient(0deg, rgba(0,234,255,0.06) 0 1px, transparent 1px 24px),
+      repeating-linear-gradient(90deg, rgba(0,234,255,0.06) 0 1px, transparent 1px 24px),
+      radial-gradient(circle at 35% 30%, #0b1f22 0%, #020a0c 55%, #000 100%);
+  }
+
+  .watch.face-night-miku{
+    --case-hi:#000000;
+    --case-mid:#000000;
+    --case-lo:#000000;
+    --dial:#000000;
+    --dial-edge:#000000;
+  }
+
+  .watch.face-night-miku #hourTicks,
+  .watch.face-night-miku #minuteTicks{
+    filter:brightness(1.5) drop-shadow(0 0 4px var(--teal-glow));
+  }
+
+  .watch.face-night-miku #numeral01{
+    filter:brightness(1.3) drop-shadow(0 0 6px rgba(255,47,143,0.75));
+  }
+
+  .watch.face-night-miku .crystal-glare{ display:none; }
+  .watch.face-night-miku .bezel-ring{ opacity:0.4; }
+
+  .watch.face-anniversary15{
+    --magenta:#d9a441;
+    --magenta-dim:#7a5a1f;
+    --case-hi:#4a3d28;
+    --case-mid:#241d13;
+    --case-lo:#100c07;
+    --dial:#0d0a06;
+  }
+
+  .watch.face-classic{
+    --teal:#e8e8ea;
+    --teal-dim:#8a8b8d;
+    --teal-glow:rgba(0,0,0,0);
+    --magenta:#e8e8ea;
+    --magenta-dim:#8a8b8d;
+    --case-hi:#c9cbcf;
+    --case-mid:#9a9ca0;
+    --case-lo:#6b6d70;
+    --dial:#101114;
+    --dial-edge:#050506;
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -711,15 +1033,8 @@
     </div>
 
     <div class="settings-panel" id="settingsPanel">
-      <h2>WATCH FACE</h2>
-      <div class="settings-row">
-        <input type="radio" name="watchFace" id="faceSeiko" value="seiko">
-        <label for="faceSeiko">Seiko Miku</label>
-      </div>
-      <div class="settings-row">
-        <input type="radio" name="watchFace" id="faceDigital" value="digital">
-        <label for="faceDigital">Digital</label>
-      </div>
+      <h2>WATCH FACE <span class="collection-count" id="collectionCount"></span></h2>
+      <div id="faceList"></div>
 
       <h2>APPEARANCE</h2>
       <div class="settings-row">
@@ -782,9 +1097,32 @@
         Tap the watch to exit Ambient mode.
       </div>
 
+      <h2>SHARE</h2>
+      <button type="button" class="capture-btn" id="captureBtn">CAPTURE</button>
+
+      <h2>TIME CAPSULE</h2>
+      <button type="button" class="capture-btn" id="capsuleBtn">CAPTURE THIS MOMENT</button>
+      <div class="capsule-list" id="capsuleList"></div>
+
       <h2>TIMEZONE</h2>
       <select id="tzSelect"></select>
     </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="capture-overlay" id="captureOverlay">
+  <div class="capture-modal">
+    <h3>CAPTURE <button type="button" id="captureClose" aria-label="Close">&times;</button></h3>
+    <canvas class="capture-preview" id="captureCanvas" width="600" height="600"></canvas>
+    <div class="capture-aspects">
+      <button type="button" data-aspect="1:1" class="active">1:1</button>
+      <button type="button" data-aspect="4:5">4:5</button>
+      <button type="button" data-aspect="9:16">9:16</button>
+      <button type="button" data-aspect="16:9">16:9</button>
+    </div>
+    <a class="capture-download" id="captureDownload" download="miku-watch.png">DOWNLOAD PNG</a>
   </div>
 </div>
 
@@ -812,10 +1150,10 @@
       line.setAttribute('x2',x2); line.setAttribute('y2',y2);
       line.setAttribute('stroke-linecap','round');
       if(hourIndex === 1){
-        line.setAttribute('stroke', '#ff2f8f');
+        line.style.stroke = 'var(--magenta)';
         line.setAttribute('stroke-width', 3.4);
       } else {
-        line.setAttribute('stroke', '#39c5bb');
+        line.style.stroke = 'var(--teal)';
         line.setAttribute('stroke-width', 2.6);
       }
       hourTicks.appendChild(line);
@@ -863,7 +1201,6 @@
   const mode39Check = document.getElementById('mode39');
   const soundCheck = document.getElementById('soundEnabled');
   const tzReadout = document.getElementById('tzReadout');
-  const watchFaceRadios = document.querySelectorAll('input[name="watchFace"]');
   const dfTime = document.getElementById('dfTime');
   const dfDate = document.getElementById('dfDate');
   const dfTz = document.getElementById('dfTz');
@@ -997,6 +1334,7 @@
   tzSelect.addEventListener('change', () => {
     localStorage.setItem('miku-watch-tz', tzSelect.value);
     beginTimezoneSync();
+    if(tzSelect.value === 'Asia/Tokyo') unlockFace('cyan-circuit');
   });
 
   function getTimeParts(tz){
@@ -1186,12 +1524,16 @@
     if(mode39Check.checked){
       secondHand.classList.toggle('pulse-39', s === 39);
       minuteHand.classList.toggle('pulse-39', m === 39 && s < 5);
+      if(s === 39) unlockFace('anniversary15');
     } else {
       secondHand.classList.remove('pulse-39');
       minuteHand.classList.remove('pulse-39');
     }
 
-    if(lastTickSecond !== null && s !== lastTickSecond) playTick();
+    if(lastTickSecond !== null && s !== lastTickSecond){
+      playTick();
+      if(typeof refreshCaptureModal === 'function') refreshCaptureModal();
+    }
     lastTickSecond = s;
 
     dowEl.textContent = dow;
@@ -1215,20 +1557,93 @@
     return v === null ? fallback : v;
   }
 
+  // ---------- watch face collection / unlock system ----------
+  const FACES = [
+    { id: 'seiko', label: 'Seiko Miku', defaultUnlocked: true },
+    { id: 'digital', label: 'Digital', defaultUnlocked: true },
+    { id: 'cyan-circuit', label: 'Cyan Circuit', defaultUnlocked: false, hint: 'Unlock: set timezone to Tokyo' },
+    { id: 'night-miku', label: 'Night Miku', defaultUnlocked: false, hint: 'Unlock: enter Ambient mode' },
+    { id: 'anniversary15', label: '15th Anniversary', defaultUnlocked: false, hint: 'Unlock: witness a :39s glow (39 mode)' },
+    { id: 'classic', label: 'Classic', defaultUnlocked: false, hint: 'Unlock: switch appearance to Light' },
+  ];
+
+  function loadUnlocked(){
+    const defaults = FACES.filter(f => f.defaultUnlocked).map(f => f.id);
+    try{
+      const stored = JSON.parse(localStorage.getItem('miku-watch-unlocked') || '[]');
+      return Array.from(new Set(defaults.concat(stored)));
+    }catch(err){
+      return defaults;
+    }
+  }
+  let unlockedFaces = loadUnlocked();
+  function saveUnlocked(){ localStorage.setItem('miku-watch-unlocked', JSON.stringify(unlockedFaces)); }
+  function isUnlocked(id){ return unlockedFaces.includes(id); }
+
+  let toastTimer = null;
+  function showToast(msg){
+    const el = document.getElementById('toast');
+    el.innerHTML = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+  }
+
+  function unlockFace(id){
+    if(isUnlocked(id)) return;
+    unlockedFaces.push(id);
+    saveUnlocked();
+    const face = FACES.find(f => f.id === id);
+    showToast(`🎉 Unlocked: <strong>${face.label}</strong>`);
+    renderFaceList();
+  }
+
   function setWatchFace(face){
-    watchEl.classList.toggle('face-digital', face === 'digital');
+    if(!isUnlocked(face)) face = 'seiko';
+    FACES.forEach(f => watchEl.classList.remove('face-' + f.id));
+    if(face !== 'seiko') watchEl.classList.add('face-' + face);
+    numeral01.textContent = (face === 'anniversary15') ? '15' : '01';
     saveSetting('watchFace', face);
   }
-  const savedFace = loadSetting('watchFace', 'seiko');
-  document.getElementById(savedFace === 'digital' ? 'faceDigital' : 'faceSeiko').checked = true;
-  setWatchFace(savedFace);
-  watchFaceRadios.forEach(r => r.addEventListener('change', () => { if(r.checked) setWatchFace(r.value); }));
+
+  function renderFaceList(){
+    const container = document.getElementById('faceList');
+    const countEl = document.getElementById('collectionCount');
+    countEl.textContent = `(${unlockedFaces.length}/${FACES.length})`;
+    container.innerHTML = '';
+    FACES.forEach(face => {
+      const locked = !isUnlocked(face.id);
+      const row = document.createElement('div');
+      row.className = 'settings-row' + (locked ? ' locked' : '');
+      const inputId = 'face-' + face.id;
+      row.innerHTML = `<input type="radio" name="watchFace" id="${inputId}" value="${face.id}"${locked ? ' disabled' : ''}>` +
+        `<label for="${inputId}">${locked ? '🔒 ' : ''}${face.label}</label>`;
+      container.appendChild(row);
+      if(locked){
+        const hint = document.createElement('div');
+        hint.className = 'face-hint';
+        hint.textContent = face.hint;
+        container.appendChild(hint);
+      }
+    });
+    const savedFace = loadSetting('watchFace', 'seiko');
+    const activeFace = isUnlocked(savedFace) ? savedFace : 'seiko';
+    const activeInput = document.getElementById('face-' + activeFace);
+    if(activeInput) activeInput.checked = true;
+    container.querySelectorAll('input[name="watchFace"]').forEach(r => {
+      r.addEventListener('change', () => { if(r.checked) setWatchFace(r.value); });
+    });
+  }
+
+  renderFaceList();
+  setWatchFace(isUnlocked(loadSetting('watchFace', 'seiko')) ? loadSetting('watchFace', 'seiko') : 'seiko');
 
   function setAppearance(mode){
     watchEl.classList.toggle('night', mode === 'night');
     document.body.classList.toggle('oled', mode === 'oled');
     document.body.classList.toggle('light', mode === 'light');
     saveSetting('appearance', mode);
+    if(mode === 'light') unlockFace('classic');
   }
   const savedAppearance = loadSetting('appearance', 'oled');
   document.getElementById('appearance' + savedAppearance.charAt(0).toUpperCase() + savedAppearance.slice(1)).checked = true;
@@ -1277,6 +1692,7 @@
     if(mode !== 'full') togglePanel(false);
     document.getElementById(mode === 'ambient' ? 'ambientAmbient' : 'ambientFull').checked = true;
     saveSetting('ambient', mode);
+    if(mode === 'ambient') unlockFace('night-miku');
   }
   const savedAmbient = loadSetting('ambient', 'full');
   setDisplayMode(savedAmbient);
@@ -1368,13 +1784,14 @@
   document.getElementById('tzReadout').addEventListener('click', openTimezonePicker);
 
   // ---------- mobile gestures: swipe faces, swipe-up settings, tap-tilt inspect, pinch zoom, double-tap ambient ----------
-  const FACE_ORDER = ['seiko', 'digital'];
-
   function cycleWatchFace(dir){
-    const currentFace = watchEl.classList.contains('face-digital') ? 'digital' : 'seiko';
-    const nextFace = FACE_ORDER[(FACE_ORDER.indexOf(currentFace) + dir + FACE_ORDER.length) % FACE_ORDER.length];
+    const order = FACES.filter(f => isUnlocked(f.id)).map(f => f.id);
+    const currentFace = FACES.find(f => watchEl.classList.contains('face-' + f.id))?.id || 'seiko';
+    const idx = order.indexOf(currentFace);
+    const nextFace = order[((idx === -1 ? 0 : idx) + dir + order.length) % order.length];
     setWatchFace(nextFace);
-    document.getElementById(nextFace === 'digital' ? 'faceDigital' : 'faceSeiko').checked = true;
+    const input = document.getElementById('face-' + nextFace);
+    if(input) input.checked = true;
   }
 
   function handleWatchTap(){
@@ -1466,6 +1883,186 @@
     }
     gestureTouch = null;
   }, { passive: false });
+
+  // ---------- share/capture + time capsule (canvas rendering, no libraries) ----------
+  function getThemeColors(){
+    const cs = getComputedStyle(watchEl);
+    return {
+      teal: cs.getPropertyValue('--teal').trim() || '#39c5bb',
+      magenta: cs.getPropertyValue('--magenta').trim() || '#ff2f8f',
+      caseHi: cs.getPropertyValue('--case-hi').trim() || '#3a3d44',
+      caseLo: cs.getPropertyValue('--case-lo').trim() || '#0c0d0f',
+      dial: cs.getPropertyValue('--dial').trim() || '#0a0b0d'
+    };
+  }
+
+  function drawHandOnCanvas(ctx, cx, cy, deg, length, width, color){
+    const rad = deg * Math.PI / 180;
+    const x = cx + length * Math.sin(rad);
+    const y = cy - length * Math.cos(rad);
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(x, y);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.lineCap = 'round';
+    ctx.shadowColor = color;
+    ctx.shadowBlur = width * 2;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
+
+  function drawShareCanvas(canvas, w, h, opts){
+    opts = opts || {};
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    const theme = getThemeColors();
+    const isLight = document.body.classList.contains('light');
+
+    const bg = ctx.createRadialGradient(w/2, h*0.32, 10, w/2, h*0.32, Math.max(w, h)*0.8);
+    if(isLight){
+      bg.addColorStop(0, '#ffffff'); bg.addColorStop(0.5, '#eef0f2'); bg.addColorStop(1, '#dfe2e6');
+    } else {
+      bg.addColorStop(0, '#101216'); bg.addColorStop(0.5, '#08090b'); bg.addColorStop(1, '#020203');
+    }
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.textAlign = 'center';
+    ctx.fillStyle = isLight ? '#2a2c30' : '#f3f2ee';
+    ctx.font = `700 ${Math.round(w * 0.045)}px 'JetBrains Mono', monospace`;
+    ctx.fillText('MIKU WATCH', w/2, h*0.10);
+
+    const cx = w/2, cy = h*0.40, r = Math.min(w, h) * 0.30;
+
+    const caseGrad = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r);
+    caseGrad.addColorStop(0, theme.caseHi);
+    caseGrad.addColorStop(1, theme.caseLo);
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2); ctx.fillStyle = caseGrad; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx, cy, r*0.86, 0, Math.PI*2); ctx.fillStyle = theme.dial; ctx.fill();
+
+    for(let i=0;i<60;i++){
+      const isHour = i % 5 === 0;
+      const angle = (i*6) * Math.PI/180;
+      const rOuter = r*0.80, rInner = isHour ? r*0.68 : r*0.75;
+      const x1 = cx + rOuter*Math.sin(angle), y1 = cy - rOuter*Math.cos(angle);
+      const x2 = cx + rInner*Math.sin(angle), y2 = cy - rInner*Math.cos(angle);
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+      ctx.lineCap = 'round';
+      if(isHour){
+        ctx.strokeStyle = (i/5 === 1) ? theme.magenta : theme.teal;
+        ctx.lineWidth = r*0.018;
+      } else {
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+        ctx.lineWidth = r*0.006;
+      }
+      ctx.stroke();
+    }
+
+    const liveSec = rawDegrees(tzSelect.value).sec;
+    drawHandOnCanvas(ctx, cx, cy, current.hour, r*0.5, r*0.05, theme.teal);
+    drawHandOnCanvas(ctx, cx, cy, current.min, r*0.68, r*0.035, theme.teal);
+    drawHandOnCanvas(ctx, cx, cy, liveSec, r*0.72, r*0.012, theme.magenta);
+
+    ctx.beginPath(); ctx.arc(cx, cy, r*0.045, 0, Math.PI*2); ctx.fillStyle = theme.magenta; ctx.fill();
+
+    const { h: hh, m: mm, s: ss, dow, dom, offset } = getTimeParts(tzSelect.value);
+    ctx.fillStyle = theme.teal;
+    ctx.font = `700 ${Math.round(w*0.09)}px 'JetBrains Mono', monospace`;
+    ctx.fillText(`${pad(hh)}:${pad(mm)}:${pad(ss)}`, cx, cy + r*1.55);
+
+    ctx.fillStyle = isLight ? '#4a4d52' : '#8b8c8f';
+    ctx.font = `500 ${Math.round(w*0.028)}px 'JetBrains Mono', monospace`;
+    const cityLabel = (TZ_LABEL_MAP.get(tzSelect.value) || tzSelect.value).toUpperCase();
+    ctx.fillText(`${cityLabel} · ${offset}`, cx, cy + r*1.78);
+    ctx.font = `500 ${Math.round(w*0.024)}px 'JetBrains Mono', monospace`;
+    ctx.fillText(`${dow} ${dom}`, cx, cy + r*1.95);
+
+    ctx.fillStyle = theme.magenta;
+    ctx.font = `700 ${Math.round(w*0.026)}px 'JetBrains Mono', monospace`;
+    ctx.fillText(opts.moment ? 'MOMENT CAPTURED' : 'HATSUNE MIKU · DIGITAL TIMEPIECE', cx, h*0.94);
+  }
+
+  const ASPECTS = { '1:1': [1080, 1080], '4:5': [1080, 1350], '9:16': [1080, 1920], '16:9': [1920, 1080] };
+  let currentAspect = '1:1';
+  const captureOverlay = document.getElementById('captureOverlay');
+  const captureCanvas = document.getElementById('captureCanvas');
+  const captureDownload = document.getElementById('captureDownload');
+
+  function refreshCaptureModal(){
+    if(!captureOverlay.classList.contains('open')) return;
+    const [w, h] = ASPECTS[currentAspect];
+    drawShareCanvas(captureCanvas, w, h, {});
+    captureDownload.href = captureCanvas.toDataURL('image/png');
+  }
+
+  document.getElementById('captureBtn').addEventListener('click', () => {
+    captureOverlay.classList.add('open');
+    refreshCaptureModal();
+  });
+  document.getElementById('captureClose').addEventListener('click', () => captureOverlay.classList.remove('open'));
+  captureOverlay.addEventListener('click', (e) => { if(e.target === captureOverlay) captureOverlay.classList.remove('open'); });
+  document.querySelectorAll('.capture-aspects button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.capture-aspects button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentAspect = btn.dataset.aspect;
+      refreshCaptureModal();
+    });
+  });
+
+  // ---------- time capsule ----------
+  function loadCapsules(){
+    try{ return JSON.parse(localStorage.getItem('miku-watch-capsules') || '[]'); }catch(err){ return []; }
+  }
+  function saveCapsules(list){ localStorage.setItem('miku-watch-capsules', JSON.stringify(list)); }
+  let capsules = loadCapsules();
+
+  function renderCapsuleList(){
+    const list = document.getElementById('capsuleList');
+    list.innerHTML = '';
+    if(capsules.length === 0){
+      list.innerHTML = '<div class="capsule-empty">No moments captured yet.</div>';
+      return;
+    }
+    capsules.slice().reverse().forEach(cap => {
+      const row = document.createElement('div');
+      row.className = 'capsule-item';
+      row.innerHTML = `<img src="${cap.dataUrl}" alt="">` +
+        `<div class="capsule-meta"><span class="capsule-date">${cap.dateLabel}</span>${cap.tzLabel}</div>` +
+        `<div class="capsule-actions">` +
+        `<a href="${cap.dataUrl}" download="miku-watch-${cap.id}.png" title="Download">⬇</a>` +
+        `<button type="button" data-id="${cap.id}" title="Delete">✕</button>` +
+        `</div>`;
+      list.appendChild(row);
+    });
+    list.querySelectorAll('.capsule-actions button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        capsules = capsules.filter(c => String(c.id) !== btn.dataset.id);
+        saveCapsules(capsules);
+        renderCapsuleList();
+      });
+    });
+  }
+
+  document.getElementById('capsuleBtn').addEventListener('click', () => {
+    const canvas = document.createElement('canvas');
+    drawShareCanvas(canvas, 480, 480, { moment: true });
+    const now = new Date();
+    capsules.push({
+      id: now.getTime(),
+      dataUrl: canvas.toDataURL('image/png'),
+      dateLabel: now.toLocaleString(),
+      tzLabel: TZ_LABEL_MAP.get(tzSelect.value) || tzSelect.value
+    });
+    if(capsules.length > 12) capsules = capsules.slice(capsules.length - 12);
+    saveCapsules(capsules);
+    renderCapsuleList();
+    showToast('📸 Moment captured');
+  });
+
+  renderCapsuleList();
 </script>
 
 </body>
