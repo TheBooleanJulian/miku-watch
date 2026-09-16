@@ -1021,6 +1021,25 @@
       radial-gradient(circle at 35% 30%, #142234 0%, #0a1420 55%, #04080c 100%);
   }
 
+  .watch.face-racing{
+    --teal:#f0f0f0;
+    --teal-dim:#888888;
+    --teal-glow:rgba(240,240,240,0.3);
+    --magenta:#ff1e1e;
+    --magenta-dim:#8a0f0f;
+    --magenta-glow:rgba(255,30,30,0.6);
+    --case-hi:#2a2a2a;
+    --case-mid:#141414;
+    --case-lo:#000000;
+    --dial:#050505;
+  }
+
+  .watch.face-racing .dial{
+    background:
+      linear-gradient(135deg, transparent 46%, rgba(255,30,30,0.18) 47%, rgba(255,30,30,0.18) 50%, transparent 51%),
+      radial-gradient(circle at 35% 30%, #1a1a1a 0%, #050505 55%, #000 100%);
+  }
+
   @media (prefers-reduced-motion: reduce){
     .hand{ transition:none !important; }
   }
@@ -1591,6 +1610,7 @@
   volumeSlider.addEventListener('input', () => {
     saveSetting('volume', volumeSlider.value);
     if(Number(volumeSlider.value) === 0) unlockFace('wood');
+    if(Number(volumeSlider.value) === 100) unlockFace('racing');
   });
 
   let lastTickSecond = null;
@@ -1684,6 +1704,7 @@
     { id: 'snow', label: 'Snow', defaultUnlocked: false, hint: 'Unlock: enter Ambient mode' },
     { id: 'wood', label: 'Wood', defaultUnlocked: false, hint: 'Unlock: set volume to 0' },
     { id: 'solar', label: 'Solar', defaultUnlocked: false, hint: 'Unlock: set timezone to Tokyo' },
+    { id: 'racing', label: 'Racing', defaultUnlocked: false, hint: 'Unlock: set volume to 100' },
   ];
 
   function loadUnlocked(){
