@@ -921,16 +921,16 @@
   }
 
   .watch.face-wood{
-    --teal:#6b4226;
-    --teal-dim:#3d2415;
-    --teal-glow:rgba(0,0,0,0);
-    --magenta:#c9a227;
+    --teal:#e8c9a0;
+    --teal-dim:#a8825a;
+    --teal-glow:rgba(15,8,4,0.6);
+    --magenta:#e0b83a;
     --magenta-dim:#8a6b1a;
-    --magenta-glow:rgba(201,162,39,0.3);
+    --magenta-glow:rgba(224,184,58,0.35);
     --case-hi:#8b5a2b;
     --case-mid:#6b4226;
     --case-lo:#3d2415;
-    --dial:#5a3820;
+    --dial:#2e1c0f;
   }
 
   .watch.face-wood #hourTicks,
@@ -941,9 +941,9 @@
 
   .watch.face-wood .dial{
     background:
-      repeating-linear-gradient(95deg, rgba(0,0,0,0.10) 0px, rgba(0,0,0,0.10) 2px, transparent 2px, transparent 7px),
-      repeating-linear-gradient(95deg, rgba(255,200,140,0.06) 0px, rgba(255,200,140,0.06) 1px, transparent 1px, transparent 11px),
-      radial-gradient(circle at 35% 30%, #7a4f2a 0%, #5a3820 55%, #2e1c10 100%);
+      repeating-linear-gradient(95deg, rgba(0,0,0,0.16) 0px, rgba(0,0,0,0.16) 2px, transparent 2px, transparent 7px),
+      repeating-linear-gradient(95deg, rgba(255,200,140,0.05) 0px, rgba(255,200,140,0.05) 1px, transparent 1px, transparent 11px),
+      radial-gradient(circle at 35% 30%, #4a3018 0%, #2e1c0f 55%, #150c06 100%);
   }
 
   .watch.face-solar{
@@ -1596,9 +1596,10 @@
   ];
 
   function loadUnlocked(){
+    const validIds = FACES.map(f => f.id);
     const defaults = FACES.filter(f => f.defaultUnlocked).map(f => f.id);
     try{
-      const stored = JSON.parse(localStorage.getItem('miku-watch-unlocked') || '[]');
+      const stored = JSON.parse(localStorage.getItem('miku-watch-unlocked') || '[]').filter(id => validIds.includes(id));
       return Array.from(new Set(defaults.concat(stored)));
     }catch(err){
       return defaults;
@@ -1606,6 +1607,7 @@
   }
   let unlockedFaces = loadUnlocked();
   function saveUnlocked(){ localStorage.setItem('miku-watch-unlocked', JSON.stringify(unlockedFaces)); }
+  saveUnlocked(); // persist cleanup of any stale/removed face ids immediately
   function isUnlocked(id){ return unlockedFaces.includes(id); }
 
   let toastTimer = null;
