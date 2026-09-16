@@ -10,38 +10,43 @@ Clone the repo and open `index.html` directly in a browser to run it.
 ## Features
 
 **Watch face collection**
+
+Faces appear in a permanent, deliberate order (signature → neutral/white →
+warm/natural → tech → bold → special-edition), not alphabetically or by
+unlock order:
+
 - **Night Miku** — the default face: case/bezel/reflection stripped down to
   just the glowing teal-and-magenta face, with a magenta "01" marker, a date
   window, and a wordmark emblem. Unlocked from the start.
-- **Cyan Circuit** 🔒 — an all-cyan futuristic reskin with a circuit-trace dial,
-  hexadecimal hour numerals (A/B/C at 10/11/12), and a small microchip icon
-  on the lower dial. Unlocks when you set the timezone to California.
-- **15th Anniversary** 🔒 — a warm gold accent variant with a "15" marker on
-  the 3 o'clock tick. Unlocks the first time you witness a `:39` second glow
-  (39 mode must be on).
-- **Monochrome** 🔒 — a conventional silver-case, monochrome-hands watch with
-  no color gimmick or glow. Unlocks when you switch to Tick seconds.
 - **Classic** 🔒 — white case and dial, black hands, a red second hand, no
   glow. Unlocks when you hide the date window.
-- **Terminal Green** 🔒 — monochrome phosphor-green on black, hacker-terminal
-  style. Unlocks when you enable sound.
+- **Monochrome** 🔒 — a conventional silver-case, monochrome-hands watch with
+  no color gimmick or glow. Unlocks when you switch to Tick seconds.
+- **Snow** 🔒 — white case and dial with a light-blue accent, no glow, and a
+  small snowflake in the lower-center of the dial. Unlocks the first time
+  you enter Ambient mode.
 - **Rose Gold** 🔒 — warm rose-gold case and hands on a dark dial. Unlocks
   when you hide the seconds hand.
 - **Sakura** 🔒 — soft cherry-blossom pink, with a few decorative petals
   scattered across the dial. Unlocks when you switch to the Digital display
   format.
-- **Snow** 🔒 — white case and dial with a light-blue accent, no glow, and a
-  small snowflake in the lower-center of the dial. Unlocks the first time
-  you enter Ambient mode.
 - **Wood** 🔒 — warm wood-grain case and dial, no glow. Unlocks when you set
   the volume slider to 0.
+- **Cyan Circuit** 🔒 — an all-cyan futuristic reskin with a circuit-trace dial,
+  hexadecimal hour numerals (A/B/C at 10/11/12), and a small microchip icon
+  on the lower dial. Unlocks when you set the timezone to California.
+- **Terminal Green** 🔒 — monochrome phosphor-green on black with a white
+  second hand, hacker-terminal style. Unlocks when you enable sound.
 - **Solar** 🔒 — a silicon-photovoltaic-cell grid dial (silver busbars over a
   dark blue cell), blue hands with an amber accent, and a small yellow
   radiant-sun icon on the lower dial. Unlocks when you set the timezone to
   Tokyo.
 - **Racing** 🔒 — black case and dial, white hour/minute hands and ticks, a
-  bright red second hand/hub/marker, and a checkered flag icon on the lower
-  dial. Unlocks when you push the volume slider to 100.
+  bright red second hand/hub/marker, and a wavy checkered-flag icon on the
+  lower dial. Unlocks when you push the volume slider to 100.
+- **15th Anniversary** 🔒 — a warm gold accent variant with a "15" marker on
+  the 3 o'clock tick. Unlocks the first time you witness a `:39` second glow
+  (39 mode must be on).
 
 Every face is one set of CSS custom-property overrides, so hands, ticks, the
 case, and the hub all retheme automatically — no per-element styling needed
