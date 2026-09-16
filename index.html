@@ -352,42 +352,32 @@
     color:#2a2c30;
   }
 
-  /* ---------- ambient / desk-clock display modes ---------- */
-  body[data-ambient="ambient"],
-  body[data-ambient="night"]{
-    transition:background 0.6s ease;
-  }
-
-  body[data-ambient="ambient"] .caption,
-  body[data-ambient="night"] .caption{
-    display:none;
-  }
-
+  /* ---------- ambient display mode ---------- */
   body[data-ambient="ambient"]{
+    transition:background 0.6s ease;
     background:radial-gradient(ellipse at 50% 30%, #08090b 0%, #030304 60%, #000 100%);
   }
 
-  body[data-ambient="night"]{
-    background:#000;
-  }
-
-  body[data-ambient="night"] .hand-second,
-  body[data-ambient="night"] .shadow-second{
+  body[data-ambient="ambient"] .caption{
     display:none;
   }
 
-  body[data-ambient="night"] #hourTicks,
-  body[data-ambient="night"] #minuteTicks{
-    filter:brightness(1.55) drop-shadow(0 0 3px var(--teal-glow));
+  /* strip the watch case chrome down to the glowing face itself */
+  body[data-ambient="ambient"] .watch{
+    background:none;
+    box-shadow:none;
+    cursor:pointer;
   }
 
-  body[data-ambient="night"] #numeral01{
-    filter:brightness(1.35) drop-shadow(0 0 6px rgba(255,47,143,0.75));
+  body[data-ambient="ambient"] .crown,
+  body[data-ambient="ambient"] .bezel-ring,
+  body[data-ambient="ambient"] .crystal-glare{
+    display:none;
   }
 
-  body[data-ambient="night"] .crystal-glare,
-  body[data-ambient="night"] .bezel-ring{
-    opacity:0.5;
+  body[data-ambient="ambient"] .dial{
+    background:none;
+    box-shadow:none;
   }
 
   /* ---------- 39 mode glow pulse ---------- */
@@ -760,12 +750,8 @@
         <input type="radio" name="ambient" id="ambientAmbient" value="ambient">
         <label for="ambientAmbient">Ambient (hide UI)</label>
       </div>
-      <div class="settings-row">
-        <input type="radio" name="ambient" id="ambientNight" value="night">
-        <label for="ambientNight">Night (desk clock)</label>
-      </div>
       <div class="settings-row" style="color:var(--ivory-dim); font-size:10.5px;">
-        Double-click the watch to cycle. Esc returns to Full.
+        Tap the watch to exit Ambient mode.
       </div>
 
       <h2>TIMEZONE</h2>
@@ -1173,24 +1159,22 @@
   mode39Check.checked = loadSetting('mode39', '1') === '1';
   mode39Check.addEventListener('change', () => saveSetting('mode39', mode39Check.checked ? '1' : '0'));
 
-  // ---------- ambient / desk-clock display mode ----------
-  const AMBIENT_CYCLE = ['full', 'ambient', 'night'];
+  // ---------- ambient display mode ----------
   const ambientRadios = document.querySelectorAll('input[name="ambient"]');
 
   function setDisplayMode(mode){
+    if(mode !== 'ambient') mode = 'full';
     document.body.dataset.ambient = mode;
     if(mode !== 'full') togglePanel(false);
-    document.getElementById('ambient' + mode.charAt(0).toUpperCase() + mode.slice(1)).checked = true;
+    document.getElementById(mode === 'ambient' ? 'ambientAmbient' : 'ambientFull').checked = true;
     saveSetting('ambient', mode);
   }
   const savedAmbient = loadSetting('ambient', 'full');
   setDisplayMode(savedAmbient);
   ambientRadios.forEach(r => r.addEventListener('change', () => { if(r.checked) setDisplayMode(r.value); }));
 
-  watchEl.addEventListener('dblclick', () => {
-    const currentMode = document.body.dataset.ambient || 'full';
-    const nextMode = AMBIENT_CYCLE[(AMBIENT_CYCLE.indexOf(currentMode) + 1) % AMBIENT_CYCLE.length];
-    setDisplayMode(nextMode);
+  watchEl.addEventListener('click', () => {
+    if(document.body.dataset.ambient === 'ambient') setDisplayMode('full');
   });
 
   window.addEventListener('keydown', (e) => {
