@@ -971,7 +971,8 @@
   }
 
   .watch.face-cyan-circuit .chip-logo,
-  .watch.face-solar .sun-logo{
+  .watch.face-solar .sun-logo,
+  .watch.face-racing .flag-logo{
     display:block;
   }
 
@@ -1034,11 +1035,6 @@
     --dial:#050505;
   }
 
-  .watch.face-racing .dial{
-    background:
-      linear-gradient(135deg, transparent 46%, rgba(255,30,30,0.18) 47%, rgba(255,30,30,0.18) 50%, transparent 51%),
-      radial-gradient(circle at 35% 30%, #1a1a1a 0%, #050505 55%, #000 100%);
-  }
 
   @media (prefers-reduced-motion: reduce){
     .hand{ transition:none !important; }
@@ -1104,6 +1100,17 @@
           <line x1="4.2" y1="19.8" x2="6.3" y2="17.7"/>
           <line x1="17.7" y1="6.3" x2="19.8" y2="4.2"/>
         </g>
+      </svg>
+
+      <svg class="face-logo flag-logo" viewBox="0 0 24 24" aria-hidden="true">
+        <line x1="4" y1="2" x2="4" y2="22" stroke="#ffffff" stroke-width="1.5"/>
+        <rect x="4" y="3" width="4" height="4" fill="#ffffff"/>
+        <rect x="8" y="3" width="4" height="4" fill="#000000"/>
+        <rect x="12" y="3" width="4" height="4" fill="#ffffff"/>
+        <rect x="4" y="7" width="4" height="4" fill="#000000"/>
+        <rect x="8" y="7" width="4" height="4" fill="#ffffff"/>
+        <rect x="12" y="7" width="4" height="4" fill="#000000"/>
+        <rect x="4" y="3" width="12" height="8" fill="none" stroke="#ffffff" stroke-width="0.75"/>
       </svg>
 
       <div class="hand-shadow shadow-hour" id="hourHandShadow"></div>
