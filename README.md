@@ -4,8 +4,10 @@ A single-file, dependency-free analog watch face in the browser — a Seiko-insp
 teal-and-magenta dial built as an anniversary piece, with a growing set of
 mechanical and personalization touches layered on top.
 
-No build step, no framework: it's one `index.html` with inline CSS and vanilla JS.
-Clone the repo and open `index.html` directly in a browser to run it.
+No build step, no framework, no external libraries: it's one `index.html`
+with inline CSS and vanilla JS, plus a single image asset (the Lunar face's
+moon photo) in `assets/`. Clone the repo and open `index.html` directly in
+a browser to run it.
 
 ## Features
 
@@ -25,10 +27,10 @@ unlock order:
 - **Snow** 🔒 — white case and dial with a light-blue accent, no glow, and a
   small snowflake in the lower-center of the dial. Unlocks the first time
   you enter Ambient mode.
-- **Lunar** 🔒 — a grey metallic case with a crater-textured dial (synthesized
-  from layered CSS gradients, not an embedded photo), dark hands, and a muted
-  gold accent. Unlocks when you set the timezone to Kiritimati — the very
-  last entry in the dropdown.
+- **Lunar** 🔒 — a grey metallic case with a real full-moon photo as the dial
+  (`assets/accurova_fullmoon.jpg`), dark hands, and a muted gold accent.
+  Unlocks when you set the timezone to Kiritimati — the very last entry in
+  the dropdown.
 - **Rose Gold** 🔒 — warm rose-gold case and hands on a dark dial. Unlocks
   when you hide the seconds hand.
 - **Sakura** 🔒 — soft cherry-blossom pink, with a few decorative petals
@@ -152,3 +154,8 @@ This project is being built incrementally. Rough phases, in order:
 
 Plain HTML + CSS + JavaScript. No dependencies, no bundler. Uses the
 `Intl.DateTimeFormat` API for timezone-aware time formatting.
+
+## Credits
+
+Built by TheBooleanJulian. Moon photo (Lunar face) by Accurova. Both are
+credited in a small footer on the page itself.
