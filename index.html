@@ -920,6 +920,23 @@
     background:linear-gradient(120deg, rgba(0,60,90,0.06) 0%, rgba(0,60,90,0) 30%);
   }
 
+  .snowflake{
+    display:none;
+    position:absolute;
+    top:72%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    font-size:clamp(14px, 4.5vmin, 22px);
+    line-height:1;
+    color:var(--magenta);
+    text-shadow:0 0 6px var(--magenta-glow);
+    pointer-events:none;
+  }
+
+  .watch.face-snow .snowflake{
+    display:block;
+  }
+
   .watch.face-wood{
     --teal:#e8c9a0;
     --teal-dim:#a8825a;
@@ -1001,6 +1018,8 @@
       <div class="petal petal-2"></div>
       <div class="petal petal-3"></div>
       <div class="petal petal-4"></div>
+
+      <div class="snowflake">&#10052;</div>
 
       <div class="hand-shadow shadow-hour" id="hourHandShadow"></div>
       <div class="hand-shadow shadow-minute" id="minuteHandShadow"></div>
@@ -1585,8 +1604,8 @@
     { id: 'night-miku', label: 'Night Miku', defaultUnlocked: true },
     { id: 'cyan-circuit', label: 'Cyan Circuit', defaultUnlocked: false, hint: 'Unlock: set timezone to California' },
     { id: 'anniversary15', label: '15th Anniversary', defaultUnlocked: false, hint: 'Unlock: witness a :39s glow (39 mode)' },
-    { id: 'classic', label: 'Classic', defaultUnlocked: false, hint: 'Unlock: switch to Tick seconds' },
-    { id: 'pure-white', label: 'Pure White', defaultUnlocked: false, hint: 'Unlock: hide the date window' },
+    { id: 'classic', label: 'Monochrome', defaultUnlocked: false, hint: 'Unlock: switch to Tick seconds' },
+    { id: 'pure-white', label: 'Classic', defaultUnlocked: false, hint: 'Unlock: hide the date window' },
     { id: 'terminal-green', label: 'Terminal Green', defaultUnlocked: false, hint: 'Unlock: enable sound' },
     { id: 'rose-gold', label: 'Rose Gold', defaultUnlocked: false, hint: 'Unlock: hide the seconds hand' },
     { id: 'sakura', label: 'Sakura', defaultUnlocked: false, hint: 'Unlock: switch to Digital format' },
