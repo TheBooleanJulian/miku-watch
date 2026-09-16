@@ -81,21 +81,6 @@ All settings persist across reloads via `localStorage`.
 - Tap the timezone readout to open the timezone picker (same as tapping
   the crown).
 
-**Capture / Share**
-- The Settings → Share → CAPTURE button opens a preview rendered live on
-  `<canvas>` (no DOM-screenshot library) using the current hand angles and
-  the active face's actual theme colors, so the image always matches what's
-  on screen.
-- Pick a crop — 1:1, 4:5, 9:16, or 16:9 — and download the PNG. The preview
-  keeps ticking live while the modal is open.
-
-**Time Capsule**
-- Settings → Time Capsule → "Capture this moment" renders a keepsake image
-  (same renderer, "MOMENT CAPTURED" framing) and saves the finished PNG
-  straight into `localStorage` alongside a timestamp and city.
-- A scrollable list of past capsules shows a thumbnail for each, with a
-  one-tap download or delete. Capped at the 12 most recent.
-
 ## Roadmap
 
 This project is being built incrementally. Rough phases, in order:
@@ -106,8 +91,6 @@ This project is being built incrementally. Rough phases, in order:
 - [x] Ambient display mode
 - [x] Sound design (synthesized tick, crown click, UI click, startup chime)
 - [x] Mobile gestures (swipe faces, swipe-up settings, tilt, pinch zoom, taps)
-- [x] Capture/share mode (canvas-rendered image, 4 aspect ratios, PNG download)
-- [x] Time Capsule (saved keepsake snapshots with thumbnails)
 - [x] Watchmaker-style presets (4 additional fully-themed faces via CSS
       custom-property overrides — a lighter take than a freeform dial/hands/
       strap/case combinator, since this UI has no visible strap to customize)
