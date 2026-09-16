@@ -13,9 +13,9 @@ Clone the repo and open `index.html` directly in a browser to run it.
 - **Night Miku** — the default face: case/bezel/reflection stripped down to
   just the glowing teal-and-magenta face, with a magenta "01" marker, a date
   window, and a wordmark emblem. Unlocked from the start.
-- **Cyan Circuit** 🔒 — an all-cyan futuristic reskin with a circuit-trace dial
-  and hexadecimal hour numerals (A/B/C at 10/11/12). Unlocks when you set the
-  timezone to California.
+- **Cyan Circuit** 🔒 — an all-cyan futuristic reskin with a circuit-trace dial,
+  hexadecimal hour numerals (A/B/C at 10/11/12), and a small microchip icon
+  on the lower dial. Unlocks when you set the timezone to California.
 - **15th Anniversary** 🔒 — a warm gold accent variant with a "15" marker on
   the 3 o'clock tick. Unlocks the first time you witness a `:39` second glow
   (39 mode must be on).
@@ -36,8 +36,9 @@ Clone the repo and open `index.html` directly in a browser to run it.
 - **Wood** 🔒 — warm wood-grain case and dial, no glow. Unlocks when you set
   the volume slider to 0.
 - **Solar** 🔒 — a silicon-photovoltaic-cell grid dial (silver busbars over a
-  dark blue cell), blue hands with an amber "sun" accent. Unlocks when you
-  set the timezone to Tokyo.
+  dark blue cell), blue hands with an amber accent, and a small yellow
+  radiant-sun icon on the lower dial. Unlocks when you set the timezone to
+  Tokyo.
 
 Every face is one set of CSS custom-property overrides, so hands, ticks, the
 case, and the hub all retheme automatically — no per-element styling needed
