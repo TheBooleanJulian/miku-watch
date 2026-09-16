@@ -1349,10 +1349,9 @@
 
   // ---------- watch face collection / unlock system ----------
   const FACES = [
-    { id: 'seiko', label: 'Seiko Miku', defaultUnlocked: true },
+    { id: 'night-miku', label: 'Night Miku', defaultUnlocked: true },
     { id: 'digital', label: 'Digital', defaultUnlocked: true },
     { id: 'cyan-circuit', label: 'Cyan Circuit', defaultUnlocked: false, hint: 'Unlock: set timezone to Tokyo' },
-    { id: 'night-miku', label: 'Night Miku', defaultUnlocked: false, hint: 'Unlock: enter Ambient mode' },
     { id: 'anniversary15', label: '15th Anniversary', defaultUnlocked: false, hint: 'Unlock: witness a :39s glow (39 mode)' },
     { id: 'classic', label: 'Classic', defaultUnlocked: false, hint: 'Unlock: switch to Tick seconds' },
     { id: 'pure-white', label: 'Pure White', defaultUnlocked: false, hint: 'Unlock: hide the date window' },
@@ -1393,9 +1392,9 @@
   }
 
   function setWatchFace(face){
-    if(!isUnlocked(face)) face = 'seiko';
+    if(!isUnlocked(face)) face = 'night-miku';
     FACES.forEach(f => watchEl.classList.remove('face-' + f.id));
-    if(face !== 'seiko') watchEl.classList.add('face-' + face);
+    watchEl.classList.add('face-' + face);
     setSpecialHourMarker(face === 'anniversary15' ? 3 : 1, face === 'anniversary15' ? '15' : '01');
     saveSetting('watchFace', face);
     if(face === 'digital') unlockFace('sakura');
@@ -1421,8 +1420,8 @@
         container.appendChild(hint);
       }
     });
-    const savedFace = loadSetting('watchFace', 'seiko');
-    const activeFace = isUnlocked(savedFace) ? savedFace : 'seiko';
+    const savedFace = loadSetting('watchFace', 'night-miku');
+    const activeFace = isUnlocked(savedFace) ? savedFace : 'night-miku';
     const activeInput = document.getElementById('face-' + activeFace);
     if(activeInput) activeInput.checked = true;
     container.querySelectorAll('input[name="watchFace"]').forEach(r => {
@@ -1431,7 +1430,7 @@
   }
 
   renderFaceList();
-  setWatchFace(isUnlocked(loadSetting('watchFace', 'seiko')) ? loadSetting('watchFace', 'seiko') : 'seiko');
+  setWatchFace(isUnlocked(loadSetting('watchFace', 'night-miku')) ? loadSetting('watchFace', 'night-miku') : 'night-miku');
 
   const savedSecondsMotion = loadSetting('secondsMotion', 'smooth');
   document.getElementById(savedSecondsMotion === 'tick' ? 'secondsTick' : 'secondsSmooth').checked = true;
@@ -1571,7 +1570,7 @@
   // ---------- mobile gestures: swipe faces, swipe-up settings, tap-tilt inspect, pinch zoom, double-tap ambient ----------
   function cycleWatchFace(dir){
     const order = FACES.filter(f => isUnlocked(f.id)).map(f => f.id);
-    const currentFace = FACES.find(f => watchEl.classList.contains('face-' + f.id))?.id || 'seiko';
+    const currentFace = FACES.find(f => watchEl.classList.contains('face-' + f.id))?.id || 'night-miku';
     const idx = order.indexOf(currentFace);
     const nextFace = order[((idx === -1 ? 0 : idx) + dir + order.length) % order.length];
     setWatchFace(nextFace);

@@ -10,14 +10,13 @@ Clone the repo and open `index.html` directly in a browser to run it.
 ## Features
 
 **Watch face collection**
-- **Seiko Miku** — the default analog face: teal ticks, a magenta "01" marker,
-  a date window, and a wordmark emblem. Unlocked from the start.
+- **Night Miku** — the default analog face: case/bezel/reflection stripped
+  down to just the glowing teal-and-magenta face, with a magenta "01"
+  marker, a date window, and a wordmark emblem. Unlocked from the start.
 - **Digital** — a cyan/magenta digital readout sharing the same case. Unlocked
   from the start.
 - **Cyan Circuit** 🔒 — an all-cyan futuristic reskin with a circuit-trace dial.
   Unlocks when you set the timezone to Tokyo.
-- **Night Miku** 🔒 — case/bezel/reflection stripped down to just the glowing
-  face. Unlocks the first time you enter Ambient mode.
 - **15th Anniversary** 🔒 — a warm gold accent variant with a "15" marker on
   the 3 o'clock tick. Unlocks the first time you witness a `:39` second glow
   (39 mode must be on).
@@ -34,7 +33,7 @@ Clone the repo and open `index.html` directly in a browser to run it.
 
 Every face is one set of CSS custom-property overrides, so hands, ticks, the
 case, and the hub all retheme automatically — no per-element styling needed
-per face. The face picker shows a live "(x/10) unlocked" count, locks out
+per face. The face picker shows a live "(x/9) unlocked" count, locks out
 radios for faces you haven't earned yet (with a hint on how to unlock them),
 and pops a toast the moment you unlock a new one.
 
@@ -108,10 +107,9 @@ This project is being built incrementally. Rough phases, in order:
 - [x] Watchmaker-style presets (4 additional fully-themed faces via CSS
       custom-property overrides — a lighter take than a freeform dial/hands/
       strap/case combinator, since this UI has no visible strap to customize)
-- [x] Collection/unlock system (8 of 10 faces earned through real
-      interactions: Tokyo timezone, Ambient mode, a `:39` glow, tick
-      seconds, hiding the date, enabling sound, hiding seconds, and the
-      Digital face)
+- [x] Collection/unlock system (7 of 9 faces earned through real
+      interactions: Tokyo timezone, a `:39` glow, tick seconds, hiding
+      the date, enabling sound, hiding seconds, and the Digital face)
 
 ## Tech
 
