@@ -66,8 +66,8 @@ numerals — there's no light/dark toggle, this is the one look.
 
 **Personalization**
 - **Watch face** — a standalone gallery box (see Layout below) holding the
-  nine-face collection described above. Hides while the settings panel is
-  open, so the two never compete for space.
+  eleven-face collection described above. Its own open/closed state is tied
+  to the settings panel's — the gear icon opens and closes both together.
 - **Settings panel (gear icon)** — everything else:
   - **Watch** — Format (Analogue/Digital) and Seconds (Smooth/Tick) as
     left/right button toggles, plus show/hide date and seconds checkboxes.
