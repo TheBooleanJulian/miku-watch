@@ -319,7 +319,7 @@
 
   /* ---------- 39 mode glow pulse ---------- */
   .hand-second.pulse-39{
-    filter:brightness(1.8) drop-shadow(0 0 8px rgba(255,47,143,0.9));
+    filter:brightness(1.8) drop-shadow(0 0 8px var(--magenta-glow));
   }
 
   .hand-minute.pulse-39{
@@ -747,6 +747,15 @@
       radial-gradient(circle at 35% 30%, #0b1f22 0%, #020a0c 55%, #000 100%);
   }
 
+  .hex-numeral{
+    opacity:0;
+    pointer-events:none;
+  }
+
+  .watch.face-cyan-circuit .hex-numeral{
+    opacity:1;
+  }
+
   .watch.face-night-miku .crystal-glare{ display:none; }
   .watch.face-night-miku .bezel-ring{ opacity:0.4; }
 
@@ -844,6 +853,26 @@
     --dial:#1a1015;
   }
 
+  .petal{
+    display:none;
+    position:absolute;
+    width:9%;
+    height:7%;
+    background:linear-gradient(135deg, #ffd1dc 0%, #ff9fc0 100%);
+    border-radius:0 60% 0 60%;
+    opacity:0.75;
+    box-shadow:0 0 4px rgba(255,159,192,0.4);
+  }
+
+  .watch.face-sakura .petal{
+    display:block;
+  }
+
+  .petal-1{ top:14%; left:22%; transform:rotate(25deg); }
+  .petal-2{ top:20%; right:16%; transform:rotate(-40deg) scale(0.8); }
+  .petal-3{ bottom:18%; left:16%; transform:rotate(-15deg) scale(0.7); }
+  .petal-4{ bottom:24%; right:22%; transform:rotate(60deg) scale(0.9); }
+
   .watch.face-snow{
     --teal:#1a4a5c;
     --teal-dim:#5a8ca8;
@@ -873,6 +902,52 @@
 
   .watch.face-snow .crystal-glare{
     background:linear-gradient(120deg, rgba(0,60,90,0.06) 0%, rgba(0,60,90,0) 30%);
+  }
+
+  .watch.face-wood{
+    --teal:#6b4226;
+    --teal-dim:#3d2415;
+    --teal-glow:rgba(0,0,0,0);
+    --magenta:#c9a227;
+    --magenta-dim:#8a6b1a;
+    --magenta-glow:rgba(201,162,39,0.3);
+    --case-hi:#8b5a2b;
+    --case-mid:#6b4226;
+    --case-lo:#3d2415;
+    --dial:#5a3820;
+  }
+
+  .watch.face-wood #hourTicks,
+  .watch.face-wood #minuteTicks,
+  .watch.face-wood #numeral01{
+    filter:none;
+  }
+
+  .watch.face-wood .dial{
+    background:
+      repeating-linear-gradient(95deg, rgba(0,0,0,0.10) 0px, rgba(0,0,0,0.10) 2px, transparent 2px, transparent 7px),
+      repeating-linear-gradient(95deg, rgba(255,200,140,0.06) 0px, rgba(255,200,140,0.06) 1px, transparent 1px, transparent 11px),
+      radial-gradient(circle at 35% 30%, #7a4f2a 0%, #5a3820 55%, #2e1c10 100%);
+  }
+
+  .watch.face-solar{
+    --teal:#8fc1e8;
+    --teal-dim:#3a6a8a;
+    --teal-glow:rgba(143,193,232,0.4);
+    --magenta:#ffa726;
+    --magenta-dim:#8a5a1a;
+    --magenta-glow:rgba(255,167,38,0.5);
+    --case-hi:#c4c9cf;
+    --case-mid:#9aa0a8;
+    --case-lo:#686e76;
+    --dial:#0a1420;
+  }
+
+  .watch.face-solar .dial{
+    background:
+      repeating-linear-gradient(0deg, rgba(180,190,200,0.18) 0 1px, transparent 1px 20px),
+      repeating-linear-gradient(90deg, rgba(180,190,200,0.18) 0 1px, transparent 1px 20px),
+      radial-gradient(circle at 35% 30%, #142234 0%, #0a1420 55%, #04080c 100%);
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -905,6 +980,11 @@
         <span class="dow" id="dow">MON</span>
         <span class="dom" id="dom">1</span>
       </div>
+
+      <div class="petal petal-1"></div>
+      <div class="petal petal-2"></div>
+      <div class="petal petal-3"></div>
+      <div class="petal petal-4"></div>
 
       <div class="hand-shadow shadow-hour" id="hourHandShadow"></div>
       <div class="hand-shadow shadow-minute" id="minuteHandShadow"></div>
@@ -1056,6 +1136,26 @@
     numeral01.textContent = text;
   }
   setSpecialHourMarker(1, '01');
+
+  // hexadecimal hour numerals (A/B/C for 10/11/12), shown only on the Cyan Circuit face
+  const svgRoot = numeral01.parentNode;
+  [{ hourIndex: 10, text: 'A' }, { hourIndex: 11, text: 'B' }, { hourIndex: 0, text: 'C' }].forEach(({ hourIndex, text }) => {
+    const angle = (hourIndex * 30) * Math.PI/180;
+    const r = 68;
+    const x = 100 + r*Math.sin(angle);
+    const y = 100 - r*Math.cos(angle) + 4;
+    const t = document.createElementNS(svgNS, 'text');
+    t.setAttribute('x', x);
+    t.setAttribute('y', y);
+    t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('font-family', 'JetBrains Mono, monospace');
+    t.setAttribute('font-weight', '700');
+    t.setAttribute('font-size', '11');
+    t.setAttribute('fill', 'var(--teal)');
+    t.classList.add('hex-numeral');
+    t.textContent = text;
+    svgRoot.appendChild(t);
+  });
 
   const hourHand = document.getElementById('hourHand');
   const minuteHand = document.getElementById('minuteHand');
@@ -1213,7 +1313,8 @@
   tzSelect.addEventListener('change', () => {
     localStorage.setItem('miku-watch-tz', tzSelect.value);
     beginTimezoneSync();
-    if(tzSelect.value === 'Asia/Tokyo') unlockFace('cyan-circuit');
+    if(tzSelect.value === 'America/Los_Angeles') unlockFace('cyan-circuit');
+    if(tzSelect.value === 'Asia/Tokyo') unlockFace('solar');
   });
 
   function getTimeParts(tz){
@@ -1382,9 +1483,13 @@
   volumeSlider.value = loadSetting('volume', '50');
   volumeSlider.addEventListener('input', () => {
     saveSetting('volume', volumeSlider.value);
+    if(Number(volumeSlider.value) === 0) unlockFace('wood');
   });
 
   let lastTickSecond = null;
+  let tickSecDeg = null; // continuously-growing angle used only in tick-seconds mode,
+                          // so the 59->0 rollover animates forward 6deg instead of the
+                          // CSS transition interpolating backward across 354deg
 
   function tick(){
     if(sync){
@@ -1407,8 +1512,22 @@
     const ms = new Date().getMilliseconds();
 
     // second hand always reflects live real time, independent of any sync spin
-    const tickMode = document.querySelector('input[name="secondsMotion"]:checked').value === 'tick';
-    const liveSec = tickMode ? s * 6 : (s + ms/1000) * 6;
+    const tickMode = watchEl.classList.contains('tick-seconds');
+    let liveSec;
+    if(tickMode){
+      const target = s * 6;
+      if(tickSecDeg === null){
+        tickSecDeg = target;
+      } else {
+        let diff = target - (tickSecDeg % 360);
+        if(diff < 0) diff += 360;
+        tickSecDeg += diff;
+      }
+      liveSec = tickSecDeg;
+    } else {
+      tickSecDeg = null;
+      liveSec = (s + ms/1000) * 6;
+    }
 
     applyHandAngles(liveSec, current.min, current.hour);
 
@@ -1448,7 +1567,7 @@
   // ---------- watch face collection / unlock system ----------
   const FACES = [
     { id: 'night-miku', label: 'Night Miku', defaultUnlocked: true },
-    { id: 'cyan-circuit', label: 'Cyan Circuit', defaultUnlocked: false, hint: 'Unlock: set timezone to Tokyo' },
+    { id: 'cyan-circuit', label: 'Cyan Circuit', defaultUnlocked: false, hint: 'Unlock: set timezone to California' },
     { id: 'anniversary15', label: '15th Anniversary', defaultUnlocked: false, hint: 'Unlock: witness a :39s glow (39 mode)' },
     { id: 'classic', label: 'Classic', defaultUnlocked: false, hint: 'Unlock: switch to Tick seconds' },
     { id: 'pure-white', label: 'Pure White', defaultUnlocked: false, hint: 'Unlock: hide the date window' },
@@ -1456,6 +1575,8 @@
     { id: 'rose-gold', label: 'Rose Gold', defaultUnlocked: false, hint: 'Unlock: hide the seconds hand' },
     { id: 'sakura', label: 'Sakura', defaultUnlocked: false, hint: 'Unlock: switch to Digital format' },
     { id: 'snow', label: 'Snow', defaultUnlocked: false, hint: 'Unlock: enter Ambient mode' },
+    { id: 'wood', label: 'Wood', defaultUnlocked: false, hint: 'Unlock: set volume to 0' },
+    { id: 'solar', label: 'Solar', defaultUnlocked: false, hint: 'Unlock: set timezone to Tokyo' },
   ];
 
   function loadUnlocked(){
