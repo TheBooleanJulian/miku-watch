@@ -13,8 +13,9 @@ Clone the repo and open `index.html` directly in a browser to run it.
 - **Night Miku** — the default face: case/bezel/reflection stripped down to
   just the glowing teal-and-magenta face, with a magenta "01" marker, a date
   window, and a wordmark emblem. Unlocked from the start.
-- **Cyan Circuit** 🔒 — an all-cyan futuristic reskin with a circuit-trace dial.
-  Unlocks when you set the timezone to Tokyo.
+- **Cyan Circuit** 🔒 — an all-cyan futuristic reskin with a circuit-trace dial
+  and hexadecimal hour numerals (A/B/C at 10/11/12). Unlocks when you set the
+  timezone to California.
 - **15th Anniversary** 🔒 — a warm gold accent variant with a "15" marker on
   the 3 o'clock tick. Unlocks the first time you witness a `:39` second glow
   (39 mode must be on).
@@ -26,14 +27,21 @@ Clone the repo and open `index.html` directly in a browser to run it.
   style. Unlocks when you enable sound.
 - **Rose Gold** 🔒 — warm rose-gold case and hands on a dark dial. Unlocks
   when you hide the seconds hand.
-- **Sakura** 🔒 — soft cherry-blossom pink. Unlocks when you switch to the
-  Digital display format.
+- **Sakura** 🔒 — soft cherry-blossom pink, with a few decorative petals
+  scattered across the dial. Unlocks when you switch to the Digital display
+  format.
 - **Snow** 🔒 — white case and dial with a light-blue accent, no glow.
   Unlocks the first time you enter Ambient mode.
+- **Wood** 🔒 — warm wood-grain case and dial, no glow. Unlocks when you set
+  the volume slider to 0.
+- **Solar** 🔒 — a silicon-photovoltaic-cell grid dial (silver busbars over a
+  dark blue cell), blue hands with an amber "sun" accent. Unlocks when you
+  set the timezone to Tokyo.
 
 Every face is one set of CSS custom-property overrides, so hands, ticks, the
 case, and the hub all retheme automatically — no per-element styling needed
-per face. The face picker shows a live "(x/9) unlocked" count, locks out
+per face (the 39-mode glow and hex numerals read the same variables, so they
+match too). The face picker shows a live "(x/11) unlocked" count, locks out
 radios for faces you haven't earned yet (with a hint on how to unlock them),
 and pops a toast the moment you unlock a new one.
 
@@ -114,13 +122,13 @@ This project is being built incrementally. Rough phases, in order:
 - [x] Ambient display mode
 - [x] Sound design (synthesized tick, crown click, UI click, startup chime)
 - [x] Mobile gestures (swipe faces, swipe-up settings, tilt, pinch zoom, taps)
-- [x] Watchmaker-style presets (4 additional fully-themed faces via CSS
-      custom-property overrides — a lighter take than a freeform dial/hands/
-      strap/case combinator, since this UI has no visible strap to customize)
-- [x] Collection/unlock system (8 of 9 faces earned through real
-      interactions: Tokyo timezone, a `:39` glow, tick seconds, hiding
-      the date, enabling sound, hiding seconds, Digital format, and
-      Ambient mode)
+- [x] Watchmaker-style presets (fully-themed faces via CSS custom-property
+      overrides — a lighter take than a freeform dial/hands/strap/case
+      combinator, since this UI has no visible strap to customize)
+- [x] Collection/unlock system (10 of 11 faces earned through real
+      interactions: California timezone, a `:39` glow, tick seconds,
+      hiding the date, enabling sound, hiding seconds, Digital format,
+      Ambient mode, zero volume, and Tokyo timezone)
 
 ## Tech
 
