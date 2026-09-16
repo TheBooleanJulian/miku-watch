@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Miku Clock</title>
+<title>Miku Watch</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -352,6 +352,44 @@
     color:#2a2c30;
   }
 
+  /* ---------- ambient / desk-clock display modes ---------- */
+  body[data-ambient="ambient"],
+  body[data-ambient="night"]{
+    transition:background 0.6s ease;
+  }
+
+  body[data-ambient="ambient"] .caption,
+  body[data-ambient="night"] .caption{
+    display:none;
+  }
+
+  body[data-ambient="ambient"]{
+    background:radial-gradient(ellipse at 50% 30%, #08090b 0%, #030304 60%, #000 100%);
+  }
+
+  body[data-ambient="night"]{
+    background:#000;
+  }
+
+  body[data-ambient="night"] .hand-second,
+  body[data-ambient="night"] .shadow-second{
+    display:none;
+  }
+
+  body[data-ambient="night"] #hourTicks,
+  body[data-ambient="night"] #minuteTicks{
+    filter:brightness(1.55) drop-shadow(0 0 3px var(--teal-glow));
+  }
+
+  body[data-ambient="night"] #numeral01{
+    filter:brightness(1.35) drop-shadow(0 0 6px rgba(255,47,143,0.75));
+  }
+
+  body[data-ambient="night"] .crystal-glare,
+  body[data-ambient="night"] .bezel-ring{
+    opacity:0.5;
+  }
+
   /* ---------- 39 mode glow pulse ---------- */
   .hand-second.pulse-39{
     filter:brightness(1.8) drop-shadow(0 0 8px rgba(255,47,143,0.9));
@@ -624,7 +662,7 @@
       </svg>
 
       <div class="emblem">
-        <div class="wordmark">MIKU&nbsp;CLOCK</div>
+        <div class="wordmark">MIKU&nbsp;WATCH</div>
       </div>
 
       <div class="date-window">
@@ -711,6 +749,23 @@
       <div class="settings-row">
         <input type="checkbox" id="mode39" checked>
         <label for="mode39">Glow at :39s / :39m</label>
+      </div>
+
+      <h2>DISPLAY</h2>
+      <div class="settings-row">
+        <input type="radio" name="ambient" id="ambientFull" value="full">
+        <label for="ambientFull">Full</label>
+      </div>
+      <div class="settings-row">
+        <input type="radio" name="ambient" id="ambientAmbient" value="ambient">
+        <label for="ambientAmbient">Ambient (hide UI)</label>
+      </div>
+      <div class="settings-row">
+        <input type="radio" name="ambient" id="ambientNight" value="night">
+        <label for="ambientNight">Night (desk clock)</label>
+      </div>
+      <div class="settings-row" style="color:var(--ivory-dim); font-size:10.5px;">
+        Double-click the watch to cycle. Esc returns to Full.
       </div>
 
       <h2>TIMEZONE</h2>
@@ -921,11 +976,11 @@
 
   const TZ_LABEL_MAP = new Map(TIMEZONES.concat(CITY_TIMEZONES).map(t => [t.value, t.label]));
   const ALL_TZ_VALUES = TIMEZONES.map(t => t.value).concat(CITY_TIMEZONES.map(t => t.value));
-  const savedTz = localStorage.getItem('miku-clock-tz');
+  const savedTz = localStorage.getItem('miku-watch-tz');
   tzSelect.value = (savedTz && ALL_TZ_VALUES.includes(savedTz)) ? savedTz : LOCAL_TZ;
 
   tzSelect.addEventListener('change', () => {
-    localStorage.setItem('miku-clock-tz', tzSelect.value);
+    localStorage.setItem('miku-watch-tz', tzSelect.value);
     beginTimezoneSync();
   });
 
@@ -1117,6 +1172,30 @@
 
   mode39Check.checked = loadSetting('mode39', '1') === '1';
   mode39Check.addEventListener('change', () => saveSetting('mode39', mode39Check.checked ? '1' : '0'));
+
+  // ---------- ambient / desk-clock display mode ----------
+  const AMBIENT_CYCLE = ['full', 'ambient', 'night'];
+  const ambientRadios = document.querySelectorAll('input[name="ambient"]');
+
+  function setDisplayMode(mode){
+    document.body.dataset.ambient = mode;
+    if(mode !== 'full') togglePanel(false);
+    document.getElementById('ambient' + mode.charAt(0).toUpperCase() + mode.slice(1)).checked = true;
+    saveSetting('ambient', mode);
+  }
+  const savedAmbient = loadSetting('ambient', 'full');
+  setDisplayMode(savedAmbient);
+  ambientRadios.forEach(r => r.addEventListener('change', () => { if(r.checked) setDisplayMode(r.value); }));
+
+  watchEl.addEventListener('dblclick', () => {
+    const currentMode = document.body.dataset.ambient || 'full';
+    const nextMode = AMBIENT_CYCLE[(AMBIENT_CYCLE.indexOf(currentMode) + 1) % AMBIENT_CYCLE.length];
+    setDisplayMode(nextMode);
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && document.body.dataset.ambient !== 'full') setDisplayMode('full');
+  });
 
   let panelOpen = false;
   function togglePanel(open){
