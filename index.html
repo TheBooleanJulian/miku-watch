@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miku Clock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-void:#08090b;
+    --bg-void-2:#020203;
+    --case-hi:#3a3d44;
+    --case-mid:#1c1e22;
+    --case-lo:#0c0d0f;
+    --dial:#0a0b0d;
+    --dial-edge:#000000;
+    --teal:#39c5bb;
+    --teal-dim:#1c5652;
+    --teal-glow:rgba(57,197,187,0.35);
+    --magenta:#ff2f8f;
+    --magenta-dim:#7a1948;
+    --ivory:#f3f2ee;
+    --ivory-dim:#8b8c8f;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    height:100%;
+    margin:0;
+    background:
+      radial-gradient(ellipse at 50% 30%, #101216 0%, var(--bg-void) 45%, var(--bg-void-2) 100%);
+    font-family:'Rajdhani', sans-serif;
+    color:var(--ivory);
+    overflow:hidden;
+  }
+
+  body{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+  }
+
+  .stage{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:28px;
+    padding:24px;
+  }
+
+  /* ---------- Watch case ---------- */
+  .watch{
+    position:relative;
+    width:min(78vmin, 460px);
+    height:min(78vmin, 460px);
+    border-radius:50%;
+    background:
+      conic-gradient(from 220deg,
+        var(--case-hi) 0deg,
+        var(--case-lo) 45deg,
+        var(--case-mid) 110deg,
+        var(--case-hi) 160deg,
+        var(--case-lo) 220deg,
+        var(--case-mid) 280deg,
+        var(--case-hi) 340deg,
+        var(--case-hi) 360deg);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.04),
+      0 30px 60px -20px rgba(0,0,0,0.9),
+      0 8px 20px rgba(0,0,0,0.6),
+      inset 0 0 2px rgba(255,255,255,0.15);
+  }
+
+  .crown{
+    position:absolute;
+    right:-9px;
+    top:50%;
+    width:16px;
+    height:34px;
+    border-radius:3px;
+    background:linear-gradient(90deg, var(--case-lo), var(--case-hi) 50%, var(--case-lo));
+    box-shadow:0 0 0 1px rgba(0,0,0,0.6);
+    background-size:100% 3px;
+    transform:translateY(-50%) translateX(0px);
+    transition:transform 0.35s cubic-bezier(.34,1.4,.5,1), box-shadow 0.35s ease;
+    cursor:grab;
+    touch-action:none;
+  }
+
+  .crown::before{
+    content:"";
+    position:absolute;
+    inset:3px 2px;
+    border-radius:2px;
+    background:repeating-linear-gradient(180deg, rgba(255,255,255,0.12) 0px, rgba(255,255,255,0.12) 1px, transparent 1px, transparent 4px);
+    transform:translateX(var(--groove-shift, 0px));
+    transition:transform 0.15s linear;
+  }
+
+  .crown.dragging{
+    cursor:grabbing;
+    transform:translateY(-50%) translateX(4px);
+    box-shadow:0 0 0 1px rgba(0,0,0,0.6), 0 0 8px var(--teal-glow);
+  }
+
+  .bezel-ring{
+    position:absolute;
+    inset:5.5%;
+    border-radius:50%;
+    background:var(--dial-edge);
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.06),
+      inset 0 2px 6px rgba(0,0,0,0.9);
+  }
+
+  .dial{
+    position:absolute;
+    inset:8.5%;
+    border-radius:50%;
+    background:
+      radial-gradient(circle at 35% 30%, #131418 0%, var(--dial) 55%, #000 100%);
+    box-shadow:
+      inset 0 0 22px rgba(0,0,0,0.85),
+      inset 0 0 1px rgba(255,255,255,0.08);
+    overflow:hidden;
+  }
+
+  .dial svg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+  }
+
+  /* ---------- center emblem ---------- */
+  .emblem{
+    position:absolute;
+    left:50%;
+    top:38%;
+    transform:translate(-50%,-50%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    pointer-events:none;
+  }
+
+  .emblem svg{
+    width:15%;
+    min-width:34px;
+    filter:drop-shadow(0 0 4px var(--teal-glow));
+  }
+
+  .emblem .wordmark{
+    font-family:'Rajdhani', sans-serif;
+    font-weight:700;
+    font-size:clamp(8px, 2.6vmin, 13px);
+    letter-spacing:0.22em;
+    color:var(--teal);
+    text-shadow:0 0 6px var(--teal-glow);
+  }
+
+  /* ---------- date window ---------- */
+  .date-window{
+    position:absolute;
+    left:73%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:3px 7px;
+    background:#000;
+    border:1px solid #2b2c30;
+    border-radius:2px;
+    box-shadow:inset 0 0 3px rgba(0,0,0,0.9);
+  }
+
+  .date-window .dow{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:500;
+    font-size:clamp(7px, 1.7vmin, 10px);
+    letter-spacing:0.08em;
+    color:var(--ivory);
+  }
+
+  .date-window .dom{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:clamp(7px, 1.7vmin, 10px);
+    color:var(--ivory);
+  }
+
+  /* ---------- hands ---------- */
+  .hand{
+    position:absolute;
+    left:50%;
+    bottom:50%;
+    transform-origin:50% 100%;
+    border-radius:3px;
+  }
+
+  .hand-hour{
+    width:3.6%;
+    height:26%;
+    margin-left:-1.8%;
+    background:linear-gradient(180deg, var(--teal), var(--teal-dim));
+    box-shadow:0 0 5px var(--teal-glow);
+    z-index:2;
+  }
+
+  .hand-minute{
+    width:2.6%;
+    height:37%;
+    margin-left:-1.3%;
+    background:linear-gradient(180deg, var(--teal), var(--teal-dim));
+    box-shadow:0 0 5px var(--teal-glow);
+    z-index:2;
+  }
+
+  .hand-second{
+    width:1%;
+    height:40%;
+    margin-left:-0.5%;
+    background:var(--magenta);
+    box-shadow:0 0 6px rgba(255,47,143,0.55);
+    z-index:3;
+  }
+  .hand-second::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    bottom:-16%;
+    width:600%;
+    height:16%;
+    transform:translateX(-50%);
+    background:var(--magenta);
+  }
+
+  /* ---------- hand shadows (fixed light direction, independent of hand angle) ---------- */
+  .hand-shadow{
+    position:absolute;
+    left:50%;
+    bottom:50%;
+    transform-origin:50% 100%;
+    border-radius:3px;
+    background:#000;
+    pointer-events:none;
+    z-index:1;
+  }
+
+  .shadow-hour{ width:3.6%; height:26%; margin-left:-1.8%; filter:blur(1px); opacity:0.32; }
+  .shadow-minute{ width:2.6%; height:37%; margin-left:-1.3%; filter:blur(1.8px); opacity:0.28; }
+  .shadow-second{ width:1%; height:40%; margin-left:-0.5%; filter:blur(2.6px); opacity:0.22; }
+
+  .hub{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:3.4%;
+    height:3.4%;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--magenta), var(--magenta-dim));
+    box-shadow:0 0 6px rgba(255,47,143,0.6), 0 0 0 2px #000;
+    z-index:5;
+  }
+
+  .crystal-glare{
+    position:absolute;
+    inset:8.5%;
+    border-radius:50%;
+    background:linear-gradient(120deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 30%);
+    pointer-events:none;
+  }
+
+  /* ---------- luminous / night mode ---------- */
+  .watch.night #hourTicks,
+  .watch.night #minuteTicks{
+    filter:brightness(1.55) drop-shadow(0 0 3px var(--teal-glow));
+    transition:filter 0.4s ease;
+  }
+
+  .watch.night #numeral01{
+    filter:brightness(1.35) drop-shadow(0 0 6px rgba(255,47,143,0.75));
+    transition:filter 0.4s ease;
+  }
+
+  .watch:not(.night) #hourTicks,
+  .watch:not(.night) #minuteTicks,
+  .watch:not(.night) #numeral01{
+    transition:filter 0.4s ease;
+  }
+
+  body.oled{
+    --bg-void:#000000;
+    --bg-void-2:#000000;
+    --dial:#000000;
+  }
+
+  /* ---------- 39 mode glow pulse ---------- */
+  .hand-second.pulse-39{
+    filter:brightness(1.8) drop-shadow(0 0 8px rgba(255,47,143,0.9));
+  }
+
+  .hand-minute.pulse-39{
+    filter:brightness(1.6) drop-shadow(0 0 8px var(--teal-glow));
+  }
+
+  /* ---------- caption ---------- */
+  .caption{
+    text-align:center;
+  }
+
+  .caption .title{
+    font-family:'Rajdhani', sans-serif;
+    font-weight:700;
+    font-size:clamp(14px, 3vmin, 20px);
+    letter-spacing:0.35em;
+    color:var(--ivory);
+  }
+
+  .caption .title span{
+    color:var(--magenta);
+  }
+
+  .caption .subtitle{
+    margin-top:4px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.12em;
+    color:var(--ivory-dim);
+  }
+
+  .tz-readout{
+    margin-top:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    color:var(--ivory-dim);
+  }
+
+  .tz-readout .tz-offset{
+    color:var(--magenta);
+    font-weight:700;
+  }
+
+  .settings-btn{
+    background:#000;
+    color:var(--ivory-dim);
+    border:1px solid var(--teal-dim);
+    border-radius:50%;
+    width:22px;
+    height:22px;
+    line-height:1;
+    font-size:12px;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    transition:color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.3s ease;
+  }
+
+  .settings-btn:hover{
+    color:var(--teal);
+    border-color:var(--teal);
+    box-shadow:0 0 4px var(--teal-glow);
+  }
+
+  .settings-btn.open{
+    transform:rotate(45deg);
+    color:var(--teal);
+    border-color:var(--teal);
+  }
+
+  /* ---------- settings panel ---------- */
+  .settings-panel{
+    margin-top:16px;
+    width:min(86vw, 300px);
+    max-height:0;
+    overflow:hidden;
+    opacity:0;
+    background:#0a0b0d;
+    border:1px solid var(--teal-dim);
+    border-radius:6px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.6);
+    transition:max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease;
+  }
+
+  .settings-panel.open{
+    max-height:560px;
+    opacity:1;
+    padding:14px 16px 16px;
+  }
+
+  .settings-panel h2{
+    margin:14px 0 6px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.18em;
+    color:var(--teal);
+  }
+
+  .settings-panel h2:first-child{
+    margin-top:0;
+  }
+
+  .settings-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:4px 0;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.03em;
+    color:var(--ivory);
+  }
+
+  .settings-row input[type="radio"],
+  .settings-row input[type="checkbox"]{
+    accent-color:var(--teal);
+    width:13px;
+    height:13px;
+    cursor:pointer;
+  }
+
+  .settings-row label{
+    cursor:pointer;
+  }
+
+  .settings-panel select{
+    width:100%;
+    background:#000;
+    color:var(--teal);
+    border:1px solid var(--teal-dim);
+    border-radius:3px;
+    padding:5px 6px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.05em;
+    outline:none;
+    cursor:pointer;
+  }
+
+  .settings-panel select:focus{
+    border-color:var(--teal);
+    box-shadow:0 0 4px var(--teal-glow);
+  }
+
+  .settings-panel select optgroup{
+    background:#0a0b0d;
+    color:var(--magenta);
+    font-style:normal;
+    font-weight:700;
+  }
+
+  .settings-panel select option{
+    background:#0a0b0d;
+    color:var(--ivory);
+  }
+
+  .watch.hide-date .date-window{ visibility:hidden; }
+  .watch.hide-seconds .hand-second,
+  .watch.hide-seconds .shadow-second{ display:none; }
+
+  .watch.tick-seconds .hand-second,
+  .watch.tick-seconds .shadow-second{
+    transition:transform 0.12s cubic-bezier(.2,1.8,.4,1);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .hand{ transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="watch" id="watch" role="img" aria-label="Analog watch face styled after a teal and magenta anniversary dial">
+    <div class="crown" id="crown"></div>
+    <div class="bezel-ring"></div>
+
+    <div class="dial">
+      <svg viewBox="0 0 200 200" aria-hidden="true">
+        <!-- minute ticks -->
+        <g id="minuteTicks" stroke="#2a2c30" stroke-width="1"></g>
+        <!-- hour ticks -->
+        <g id="hourTicks"></g>
+        <!-- 01 numeral -->
+        <text id="numeral01" x="100" y="100" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700" fill="var(--magenta)" font-size="11"></text>
+      </svg>
+
+      <div class="emblem">
+        <div class="wordmark">MIKU&nbsp;CLOCK</div>
+      </div>
+
+      <div class="date-window">
+        <span class="dow" id="dow">MON</span>
+        <span class="dom" id="dom">1</span>
+      </div>
+
+      <div class="hand-shadow shadow-hour" id="hourHandShadow"></div>
+      <div class="hand-shadow shadow-minute" id="minuteHandShadow"></div>
+      <div class="hand-shadow shadow-second" id="secondHandShadow"></div>
+
+      <div class="hand hand-hour" id="hourHand"></div>
+      <div class="hand hand-minute" id="minuteHand"></div>
+      <div class="hand hand-second" id="secondHand"></div>
+      <div class="hub"></div>
+      <div class="crystal-glare"></div>
+    </div>
+  </div>
+
+  <div class="caption">
+    <div class="subtitle" id="digitalTime">--:--:--</div>
+    <div class="tz-readout">
+      <span id="tzReadout">
+        <span id="tzLabel">Local Time</span>
+        <span class="tz-offset" id="tzOffset"></span>
+      </span>
+      <button type="button" class="settings-btn" id="settingsBtn" aria-label="Settings" aria-expanded="false">&#9881;</button>
+    </div>
+
+    <div class="settings-panel" id="settingsPanel">
+      <h2>APPEARANCE</h2>
+      <div class="settings-row">
+        <input type="radio" name="appearance" id="appearanceDark" value="dark">
+        <label for="appearanceDark">Dark</label>
+      </div>
+      <div class="settings-row">
+        <input type="radio" name="appearance" id="appearanceNight" value="night">
+        <label for="appearanceNight">Night (luminous)</label>
+      </div>
+      <div class="settings-row">
+        <input type="radio" name="appearance" id="appearanceOled" value="oled">
+        <label for="appearanceOled">OLED (true black)</label>
+      </div>
+
+      <h2>WATCH</h2>
+      <div class="settings-row">
+        <input type="radio" name="secondsMotion" id="secondsSmooth" value="smooth">
+        <label for="secondsSmooth">Smooth seconds</label>
+      </div>
+      <div class="settings-row">
+        <input type="radio" name="secondsMotion" id="secondsTick" value="tick">
+        <label for="secondsTick">Tick seconds</label>
+      </div>
+      <div class="settings-row">
+        <input type="checkbox" id="showDate" checked>
+        <label for="showDate">Show date</label>
+      </div>
+      <div class="settings-row">
+        <input type="checkbox" id="showSeconds" checked>
+        <label for="showSeconds">Show seconds</label>
+      </div>
+      <div class="settings-row">
+        <input type="checkbox" id="showTimezone" checked>
+        <label for="showTimezone">Show timezone</label>
+      </div>
+
+      <h2>39 MODE</h2>
+      <div class="settings-row">
+        <input type="checkbox" id="mode39" checked>
+        <label for="mode39">Glow at :39s / :39m</label>
+      </div>
+
+      <h2>TIMEZONE</h2>
+      <select id="tzSelect"></select>
+    </div>
+  </div>
+</div>
+
+<script>
+  const svgNS = "http://www.w3.org/2000/svg";
+  const minuteTicks = document.getElementById('minuteTicks');
+  const hourTicks = document.getElementById('hourTicks');
+  const numeral01 = document.getElementById('numeral01');
+
+  // 60 minute ticks (thin teal), 12 hour ticks (bold teal), hour 1 in magenta as "01"
+  for(let i=0;i<60;i++){
+    const angle = (i * 6) * Math.PI/180;
+    const isHour = i % 5 === 0;
+    const rOuter = 92;
+    const rInner = isHour ? 78 : 87;
+    const x1 = 100 + rOuter*Math.sin(angle);
+    const y1 = 100 - rOuter*Math.cos(angle);
+    const x2 = 100 + rInner*Math.sin(angle);
+    const y2 = 100 - rInner*Math.cos(angle);
+
+    if(isHour){
+      const hourIndex = i/5; // 0..11, where 0 = 12 o'clock
+      const line = document.createElementNS(svgNS,'line');
+      line.setAttribute('x1',x1); line.setAttribute('y1',y1);
+      line.setAttribute('x2',x2); line.setAttribute('y2',y2);
+      line.setAttribute('stroke-linecap','round');
+      if(hourIndex === 1){
+        line.setAttribute('stroke', '#ff2f8f');
+        line.setAttribute('stroke-width', 3.4);
+      } else {
+        line.setAttribute('stroke', '#39c5bb');
+        line.setAttribute('stroke-width', 2.6);
+      }
+      hourTicks.appendChild(line);
+    } else {
+      const line = document.createElementNS(svgNS,'line');
+      line.setAttribute('x1',x1); line.setAttribute('y1',y1);
+      line.setAttribute('x2',x2); line.setAttribute('y2',y2);
+      line.setAttribute('stroke-linecap','round');
+      minuteTicks.appendChild(line);
+    }
+  }
+
+  // place "01" numeral near the 1 o'clock magenta marker
+  (function(){
+    const angle = (1 * 30) * Math.PI/180;
+    const r = 68;
+    const x = 100 + r*Math.sin(angle);
+    const y = 100 - r*Math.cos(angle) + 4;
+    numeral01.setAttribute('x', x);
+    numeral01.setAttribute('y', y);
+    numeral01.textContent = '01';
+  })();
+
+  const hourHand = document.getElementById('hourHand');
+  const minuteHand = document.getElementById('minuteHand');
+  const secondHand = document.getElementById('secondHand');
+  const hourHandShadow = document.getElementById('hourHandShadow');
+  const minuteHandShadow = document.getElementById('minuteHandShadow');
+  const secondHandShadow = document.getElementById('secondHandShadow');
+  const dowEl = document.getElementById('dow');
+  const domEl = document.getElementById('dom');
+  const digitalTime = document.getElementById('digitalTime');
+  const tzSelect = document.getElementById('tzSelect');
+  const tzOffset = document.getElementById('tzOffset');
+  const tzLabel = document.getElementById('tzLabel');
+  const watchEl = document.getElementById('watch');
+  const crownEl = document.getElementById('crown');
+  const settingsBtn = document.getElementById('settingsBtn');
+  const settingsPanel = document.getElementById('settingsPanel');
+  const appearanceRadios = document.querySelectorAll('input[name="appearance"]');
+  const secondsMotionRadios = document.querySelectorAll('input[name="secondsMotion"]');
+  const showDateCheck = document.getElementById('showDate');
+  const showSecondsCheck = document.getElementById('showSeconds');
+  const showTimezoneCheck = document.getElementById('showTimezone');
+  const mode39Check = document.getElementById('mode39');
+  const tzReadout = document.getElementById('tzReadout');
+
+  function pad(n){ return n.toString().padStart(2,'0'); }
+
+  const LOCAL_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  const CITY_TIMEZONES = [
+    { label: 'Midway Island', value: 'Pacific/Midway' },
+    { label: 'Honolulu', value: 'Pacific/Honolulu' },
+    { label: 'Anchorage', value: 'America/Anchorage' },
+    { label: 'Los Angeles', value: 'America/Los_Angeles' },
+    { label: 'Vancouver', value: 'America/Vancouver' },
+    { label: 'Denver', value: 'America/Denver' },
+    { label: 'Phoenix', value: 'America/Phoenix' },
+    { label: 'Chicago', value: 'America/Chicago' },
+    { label: 'Mexico City', value: 'America/Mexico_City' },
+    { label: 'Bogota', value: 'America/Bogota' },
+    { label: 'New York', value: 'America/New_York' },
+    { label: 'Lima', value: 'America/Lima' },
+    { label: 'Toronto', value: 'America/Toronto' },
+    { label: 'Caracas', value: 'America/Caracas' },
+    { label: 'Santiago', value: 'America/Santiago' },
+    { label: 'Halifax', value: 'America/Halifax' },
+    { label: 'Sao Paulo', value: 'America/Sao_Paulo' },
+    { label: 'Buenos Aires', value: 'America/Argentina/Buenos_Aires' },
+    { label: 'South Georgia', value: 'Atlantic/South_Georgia' },
+    { label: 'Azores', value: 'Atlantic/Azores' },
+    { label: 'Cape Verde', value: 'Atlantic/Cape_Verde' },
+    { label: 'London', value: 'Europe/London' },
+    { label: 'Dublin', value: 'Europe/Dublin' },
+    { label: 'Lisbon', value: 'Europe/Lisbon' },
+    { label: 'Casablanca', value: 'Africa/Casablanca' },
+    { label: 'Paris', value: 'Europe/Paris' },
+    { label: 'Berlin', value: 'Europe/Berlin' },
+    { label: 'Madrid', value: 'Europe/Madrid' },
+    { label: 'Rome', value: 'Europe/Rome' },
+    { label: 'Lagos', value: 'Africa/Lagos' },
+    { label: 'Athens', value: 'Europe/Athens' },
+    { label: 'Helsinki', value: 'Europe/Helsinki' },
+    { label: 'Cairo', value: 'Africa/Cairo' },
+    { label: 'Johannesburg', value: 'Africa/Johannesburg' },
+    { label: 'Moscow', value: 'Europe/Moscow' },
+    { label: 'Istanbul', value: 'Europe/Istanbul' },
+    { label: 'Riyadh', value: 'Asia/Riyadh' },
+    { label: 'Nairobi', value: 'Africa/Nairobi' },
+    { label: 'Tehran', value: 'Asia/Tehran' },
+    { label: 'Dubai', value: 'Asia/Dubai' },
+    { label: 'Baku', value: 'Asia/Baku' },
+    { label: 'Kabul', value: 'Asia/Kabul' },
+    { label: 'Karachi', value: 'Asia/Karachi' },
+    { label: 'Yekaterinburg', value: 'Asia/Yekaterinburg' },
+    { label: 'Mumbai', value: 'Asia/Kolkata' },
+    { label: 'Kathmandu', value: 'Asia/Kathmandu' },
+    { label: 'Dhaka', value: 'Asia/Dhaka' },
+    { label: 'Almaty', value: 'Asia/Almaty' },
+    { label: 'Yangon', value: 'Asia/Yangon' },
+    { label: 'Bangkok', value: 'Asia/Bangkok' },
+    { label: 'Jakarta', value: 'Asia/Jakarta' },
+    { label: 'Ho Chi Minh City', value: 'Asia/Ho_Chi_Minh' },
+    { label: 'Shanghai', value: 'Asia/Shanghai' },
+    { label: 'Singapore', value: 'Asia/Singapore' },
+    { label: 'Hong Kong', value: 'Asia/Hong_Kong' },
+    { label: 'Perth', value: 'Australia/Perth' },
+    { label: 'Manila', value: 'Asia/Manila' },
+    { label: 'Tokyo', value: 'Asia/Tokyo' },
+    { label: 'Seoul', value: 'Asia/Seoul' },
+    { label: 'Adelaide', value: 'Australia/Adelaide' },
+    { label: 'Sydney', value: 'Australia/Sydney' },
+    { label: 'Brisbane', value: 'Australia/Brisbane' },
+    { label: 'Guam', value: 'Pacific/Guam' },
+    { label: 'Noumea', value: 'Pacific/Noumea' },
+    { label: 'Auckland', value: 'Pacific/Auckland' },
+    { label: 'Fiji', value: 'Pacific/Fiji' },
+    { label: 'Tongatapu', value: 'Pacific/Tongatapu' },
+    { label: 'Kiritimati', value: 'Pacific/Kiritimati' },
+  ];
+
+  function offsetInfo(tz){
+    const parts = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'shortOffset' }).formatToParts(new Date());
+    const raw = (parts.find(p => p.type === 'timeZoneName') || {}).value || 'GMT+0';
+    const label = raw.replace('GMT', 'UTC');
+    const m = raw.match(/GMT([+-])(\d+)(?::(\d+))?/);
+    const minutes = m ? (m[1] === '-' ? -1 : 1) * (parseInt(m[2], 10) * 60 + parseInt(m[3] || '0', 10)) : 0;
+    return { label, minutes };
+  }
+
+  // top-level options, always visible
+  const TIMEZONES = [
+    { label: 'Local Time', value: LOCAL_TZ },
+    { label: 'UTC', value: 'UTC' },
+  ];
+  TIMEZONES.forEach(tz => {
+    const opt = document.createElement('option');
+    opt.value = tz.value;
+    opt.textContent = tz.label;
+    tzSelect.appendChild(opt);
+  });
+
+  // group remaining cities by their current UTC offset
+  const groups = new Map();
+  CITY_TIMEZONES.forEach(city => {
+    const { label, minutes } = offsetInfo(city.value);
+    if(!groups.has(label)) groups.set(label, { minutes, cities: [] });
+    groups.get(label).cities.push(city);
+  });
+
+  Array.from(groups.entries())
+    .sort((a, b) => a[1].minutes - b[1].minutes)
+    .forEach(([offsetLabel, group]) => {
+      const optgroup = document.createElement('optgroup');
+      optgroup.label = offsetLabel;
+      group.cities
+        .slice()
+        .sort((a, b) => a.label.localeCompare(b.label))
+        .forEach(city => {
+          const opt = document.createElement('option');
+          opt.value = city.value;
+          opt.textContent = city.label;
+          optgroup.appendChild(opt);
+        });
+      tzSelect.appendChild(optgroup);
+    });
+
+  const TZ_LABEL_MAP = new Map(TIMEZONES.concat(CITY_TIMEZONES).map(t => [t.value, t.label]));
+  const ALL_TZ_VALUES = TIMEZONES.map(t => t.value).concat(CITY_TIMEZONES.map(t => t.value));
+  const savedTz = localStorage.getItem('miku-clock-tz');
+  tzSelect.value = (savedTz && ALL_TZ_VALUES.includes(savedTz)) ? savedTz : LOCAL_TZ;
+
+  tzSelect.addEventListener('change', () => {
+    localStorage.setItem('miku-clock-tz', tzSelect.value);
+    beginTimezoneSync();
+  });
+
+  function getTimeParts(tz){
+    const fmt = new Intl.DateTimeFormat('en-US', {
+      timeZone: tz,
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      weekday: 'short',
+      day: 'numeric',
+      timeZoneName: 'shortOffset'
+    });
+    const parts = {};
+    fmt.formatToParts(new Date()).forEach(p => { parts[p.type] = p.value; });
+    let h = parseInt(parts.hour, 10) % 24;
+    return {
+      h,
+      m: parseInt(parts.minute, 10),
+      s: parseInt(parts.second, 10),
+      dow: parts.weekday.toUpperCase(),
+      dom: parseInt(parts.day, 10),
+      offset: (parts.timeZoneName || '').replace('GMT', 'UTC')
+    };
+  }
+
+  function rawDegrees(tz){
+    const ms = new Date().getMilliseconds();
+    const { h, m, s } = getTimeParts(tz);
+    const h12 = h % 12;
+    return {
+      sec: (s + ms/1000) * 6,
+      min: (m + s/60) * 6,
+      hour: (h12 + m/60) * 30
+    };
+  }
+
+  function totalMinutes12(tz){
+    const { h, m, s } = getTimeParts(tz);
+    return (h % 12) * 60 + m + s/60;
+  }
+
+  // displayed hour/minute-hand angles; the second hand always tracks real
+  // time directly and is never touched by the sync animation below
+  const initial = rawDegrees(tzSelect.value);
+  const current = { hour: initial.hour, min: initial.min };
+
+  const HOUR_DEG_PER_SEC = 60;   // 2 clock-hours/sec * 30deg/hour
+  const MIN_DEG_PER_SEC = 720;   // 2 clock-hours/sec * 360deg/hour
+
+  let sync = null; // {startTime, durationMs, fromHour, fromMin, toHour, toMin}
+
+  function beginTimezoneSync(){
+    const fromHour = current.hour;
+    const fromMin = current.min;
+    const fromMinutes = fromHour * 2; // hourDeg = minutes*0.5 => minutes = hourDeg*2
+    const targetMinutes = totalMinutes12(tzSelect.value);
+    const deltaMinutes = ((targetMinutes - fromMinutes) % 720 + 720) % 720;
+
+    if(deltaMinutes < 0.01){
+      sync = null;
+      return;
+    }
+
+    sync = {
+      startTime: performance.now(),
+      durationMs: (deltaMinutes / 120) * 1000, // 2 clock-hours = 120 clock-minutes per real second
+      fromHour, fromMin,
+      toHour: fromHour + deltaMinutes * 0.5,
+      toMin: fromMin + deltaMinutes * 6
+    };
+  }
+
+  function applyHandAngles(sec, min, hour){
+    secondHand.style.transform = `rotate(${sec}deg)`;
+    minuteHand.style.transform = `rotate(${min}deg)`;
+    hourHand.style.transform = `rotate(${hour}deg)`;
+
+    secondHandShadow.style.transform = `translate(2px,2.5px) rotate(${sec}deg)`;
+    minuteHandShadow.style.transform = `translate(1.5px,2px) rotate(${min}deg)`;
+    hourHandShadow.style.transform = `translate(1px,1.5px) rotate(${hour}deg)`;
+  }
+
+  function tick(){
+    if(sync){
+      const elapsedSec = (performance.now() - sync.startTime) / 1000;
+      if(elapsedSec >= sync.durationMs / 1000){
+        current.hour = sync.toHour;
+        current.min = sync.toMin;
+        sync = null;
+      } else {
+        current.hour = sync.fromHour + elapsedSec * HOUR_DEG_PER_SEC;
+        current.min = sync.fromMin + elapsedSec * MIN_DEG_PER_SEC;
+      }
+    } else {
+      const target = rawDegrees(tzSelect.value);
+      current.hour = target.hour;
+      current.min = target.min;
+    }
+
+    const { h, m, s, dow, dom, offset } = getTimeParts(tzSelect.value);
+    const ms = new Date().getMilliseconds();
+
+    // second hand always reflects live real time, independent of any sync spin
+    const tickMode = document.querySelector('input[name="secondsMotion"]:checked').value === 'tick';
+    const liveSec = tickMode ? s * 6 : (s + ms/1000) * 6;
+
+    applyHandAngles(liveSec, current.min, current.hour);
+
+    if(mode39Check.checked){
+      secondHand.classList.toggle('pulse-39', s === 39);
+      minuteHand.classList.toggle('pulse-39', m === 39 && s < 5);
+    } else {
+      secondHand.classList.remove('pulse-39');
+      minuteHand.classList.remove('pulse-39');
+    }
+
+    dowEl.textContent = dow;
+    domEl.textContent = dom;
+    digitalTime.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+    tzOffset.textContent = offset;
+    tzLabel.textContent = TZ_LABEL_MAP.get(tzSelect.value) || tzSelect.value;
+
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  // ---------- settings panel ----------
+  function saveSetting(key, value){ localStorage.setItem('miku-clock-' + key, value); }
+  function loadSetting(key, fallback){
+    const v = localStorage.getItem('miku-clock-' + key);
+    return v === null ? fallback : v;
+  }
+
+  function setAppearance(mode){
+    watchEl.classList.toggle('night', mode === 'night');
+    document.body.classList.toggle('oled', mode === 'oled');
+    saveSetting('appearance', mode);
+  }
+  const savedAppearance = loadSetting('appearance', 'dark');
+  document.getElementById('appearance' + savedAppearance.charAt(0).toUpperCase() + savedAppearance.slice(1)).checked = true;
+  setAppearance(savedAppearance);
+  appearanceRadios.forEach(r => r.addEventListener('change', () => { if(r.checked) setAppearance(r.value); }));
+
+  const savedSecondsMotion = loadSetting('secondsMotion', 'smooth');
+  document.getElementById(savedSecondsMotion === 'tick' ? 'secondsTick' : 'secondsSmooth').checked = true;
+  watchEl.classList.toggle('tick-seconds', savedSecondsMotion === 'tick');
+  secondsMotionRadios.forEach(r => r.addEventListener('change', () => {
+    if(r.checked){
+      watchEl.classList.toggle('tick-seconds', r.value === 'tick');
+      saveSetting('secondsMotion', r.value);
+    }
+  }));
+
+  function applyBoolSetting(checkbox, key, className, defaultValue){
+    const saved = loadSetting(key, defaultValue ? '1' : '0') === '1';
+    checkbox.checked = saved;
+    watchEl.classList.toggle(className, !saved);
+    checkbox.addEventListener('change', () => {
+      watchEl.classList.toggle(className, !checkbox.checked);
+      saveSetting(key, checkbox.checked ? '1' : '0');
+    });
+  }
+  applyBoolSetting(showDateCheck, 'showDate', 'hide-date', true);
+  applyBoolSetting(showSecondsCheck, 'showSeconds', 'hide-seconds', true);
+
+  const savedShowTz = loadSetting('showTimezone', '1') === '1';
+  showTimezoneCheck.checked = savedShowTz;
+  tzReadout.style.visibility = savedShowTz ? 'visible' : 'hidden';
+  showTimezoneCheck.addEventListener('change', () => {
+    tzReadout.style.visibility = showTimezoneCheck.checked ? 'visible' : 'hidden';
+    saveSetting('showTimezone', showTimezoneCheck.checked ? '1' : '0');
+  });
+
+  mode39Check.checked = loadSetting('mode39', '1') === '1';
+  mode39Check.addEventListener('change', () => saveSetting('mode39', mode39Check.checked ? '1' : '0'));
+
+  let panelOpen = false;
+  function togglePanel(open){
+    panelOpen = open !== undefined ? open : !panelOpen;
+    settingsPanel.classList.toggle('open', panelOpen);
+    settingsBtn.classList.toggle('open', panelOpen);
+    settingsBtn.setAttribute('aria-expanded', panelOpen ? 'true' : 'false');
+  }
+  settingsBtn.addEventListener('click', () => togglePanel());
+
+  // ---------- crown: drag to cycle timezones, click to open the picker ----------
+  const CROWN_STEP_PX = 28;
+  let crownDragging = false;
+  let crownStartX = 0;
+  let crownStepsApplied = 0;
+  let crownMoved = false;
+
+  function stepTimezone(diff){
+    const opts = tzSelect.options;
+    const idx = Math.max(0, Math.min(opts.length - 1, tzSelect.selectedIndex + diff));
+    if(idx !== tzSelect.selectedIndex){
+      tzSelect.selectedIndex = idx;
+      tzSelect.dispatchEvent(new Event('change'));
+    }
+  }
+
+  function onCrownMove(e){
+    if(!crownDragging) return;
+    const delta = e.clientX - crownStartX;
+    if(Math.abs(delta) > 4) crownMoved = true;
+    const grooveShift = Math.max(-3, Math.min(3, delta * 0.15));
+    crownEl.style.setProperty('--groove-shift', grooveShift + 'px');
+    const steps = Math.trunc(delta / CROWN_STEP_PX);
+    if(steps !== crownStepsApplied){
+      stepTimezone(steps - crownStepsApplied);
+      crownStepsApplied = steps;
+    }
+  }
+
+  function onCrownUp(e){
+    if(!crownDragging) return;
+    crownDragging = false;
+    crownEl.classList.remove('dragging');
+    crownEl.style.setProperty('--groove-shift', '0px');
+    try{ crownEl.releasePointerCapture(e.pointerId); }catch(err){}
+    if(!crownMoved){
+      togglePanel(true);
+      requestAnimationFrame(() => {
+        if(typeof tzSelect.showPicker === 'function'){
+          try{ tzSelect.showPicker(); }catch(err){ tzSelect.focus(); }
+        } else {
+          tzSelect.focus();
+        }
+      });
+    }
+  }
+
+  crownEl.addEventListener('pointerdown', (e) => {
+    crownDragging = true;
+    crownStartX = e.clientX;
+    crownStepsApplied = 0;
+    crownMoved = false;
+    crownEl.classList.add('dragging');
+    try{ crownEl.setPointerCapture(e.pointerId); }catch(err){}
+  });
+  crownEl.addEventListener('pointermove', onCrownMove);
+  crownEl.addEventListener('pointerup', onCrownUp);
+  crownEl.addEventListener('pointercancel', onCrownUp);
+</script>
+
+</body>
+</html>
