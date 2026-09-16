@@ -54,6 +54,17 @@ All settings persist across reloads via `localStorage`.
 - Centered on the page at any size; on wide viewports (≥1180px) the settings
   panel opens to the side of the watch instead of pushing it off-center.
 
+**Touch gestures**
+- Swipe left/right on the watch to switch faces (Seiko Miku ↔ Digital).
+- Swipe up to open the settings panel.
+- Drag a single finger to tilt the watch in 3D for a quick "inspect" look —
+  it springs back to flat on release.
+- Pinch with two fingers to zoom the watch (0.85x–1.8x).
+- Double-tap to enter Ambient mode; a single tap while in Ambient exits
+  back to Full.
+- Tap the timezone readout to open the timezone picker (same as tapping
+  the crown).
+
 ## Roadmap
 
 This project is being built incrementally. Rough phases, in order:
@@ -63,7 +74,7 @@ This project is being built incrementally. Rough phases, in order:
 - [x] Multiple watch faces (Seiko Miku, Digital)
 - [x] Ambient display mode
 - [x] Sound design (synthesized tick, crown click, UI click, startup chime)
-- [ ] Mobile gestures (swipe between faces, pinch zoom, tap shortcuts)
+- [x] Mobile gestures (swipe faces, swipe-up settings, tilt, pinch zoom, taps)
 - [ ] Capture/share mode (export a shareable image of the watch + moment)
 - [ ] Time Capsule (save a timestamped snapshot as a keepsake)
 - [ ] Watchmaker customizer (build your own dial/hands/strap/case combo)
