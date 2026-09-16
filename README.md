@@ -10,11 +10,9 @@ Clone the repo and open `index.html` directly in a browser to run it.
 ## Features
 
 **Watch face collection**
-- **Night Miku** — the default analog face: case/bezel/reflection stripped
-  down to just the glowing teal-and-magenta face, with a magenta "01"
-  marker, a date window, and a wordmark emblem. Unlocked from the start.
-- **Digital** — a cyan/magenta digital readout sharing the same case. Unlocked
-  from the start.
+- **Night Miku** — the default face: case/bezel/reflection stripped down to
+  just the glowing teal-and-magenta face, with a magenta "01" marker, a date
+  window, and a wordmark emblem. Unlocked from the start.
 - **Cyan Circuit** 🔒 — an all-cyan futuristic reskin with a circuit-trace dial.
   Unlocks when you set the timezone to Tokyo.
 - **15th Anniversary** 🔒 — a warm gold accent variant with a "15" marker on
@@ -29,7 +27,9 @@ Clone the repo and open `index.html` directly in a browser to run it.
 - **Rose Gold** 🔒 — warm rose-gold case and hands on a dark dial. Unlocks
   when you hide the seconds hand.
 - **Sakura** 🔒 — soft cherry-blossom pink. Unlocks when you switch to the
-  Digital face.
+  Digital display format.
+- **Snow** 🔒 — white case and dial with a light-blue accent, no glow.
+  Unlocks the first time you enter Ambient mode.
 
 Every face is one set of CSS custom-property overrides, so hands, ticks, the
 case, and the hub all retheme automatically — no per-element styling needed
@@ -39,6 +39,12 @@ and pops a toast the moment you unlock a new one.
 
 The whole app is always true-black (OLED) with permanently luminous ticks and
 numerals — there's no light/dark toggle, this is the one look.
+
+**Analogue / Digital**
+- A left/right toggle in Settings independent of the watch face: Digital
+  swaps the hands and ticks for a big digital readout, but keeps whichever
+  face's colors are active (same CSS custom properties), so it always
+  matches the current theme rather than having its own fixed look.
 
 **Mechanical realism**
 - Smooth sweeping second hand (or switch to a discrete per-second "tick" in settings).
@@ -52,14 +58,18 @@ numerals — there's no light/dark toggle, this is the one look.
 
 **Personalization**
 - **Watch face** — a standalone gallery box (see Layout below) holding the
-  ten-face collection described above.
+  nine-face collection described above. Hides while the settings panel is
+  open, so the two never compete for space.
 - **Settings panel (gear icon)** — everything else:
-- **Watch** — smooth vs. tick seconds, and show/hide date, seconds, and the
-  timezone readout.
-- **39 mode** — a small identity touch: the second hand glows at `:39` seconds,
-  and the minute hand briefly glows during the `:39` minute.
-- **Timezone** — ~65 cities grouped into `<optgroup>`s by current UTC offset,
-  plus Local Time and UTC pinned at the top.
+  - **Watch** — Format (Analogue/Digital) and Seconds (Smooth/Tick) as
+    left/right button toggles, plus show/hide date and seconds checkboxes.
+  - **39 mode** — the second hand glows at `:39` seconds, and the minute
+    hand briefly glows during the `:39` minute.
+  - **Sound** — an enable checkbox plus a 0-100 volume slider controlling
+    every synthesized tone's gain.
+  - **Display** — Full/Ambient as a left/right button toggle.
+  - **Timezone** — ~65 cities grouped into `<optgroup>`s by current UTC
+    offset, plus Local Time and UTC pinned at the top.
 
 All settings persist across reloads via `localStorage`.
 
@@ -72,7 +82,7 @@ All settings persist across reloads via `localStorage`.
 **Sound**
 - Fully synthesized with the Web Audio API — no audio files. A mechanical
   tick on each second, a crown detent click while dragging, a settings-button
-  click, and a three-note startup chime.
+  click, and a three-note startup chime, all scaled by the volume slider.
 - Off by default; enabling it in Settings respects browser autoplay policy
   by only starting audio on a real user gesture.
 
@@ -107,9 +117,10 @@ This project is being built incrementally. Rough phases, in order:
 - [x] Watchmaker-style presets (4 additional fully-themed faces via CSS
       custom-property overrides — a lighter take than a freeform dial/hands/
       strap/case combinator, since this UI has no visible strap to customize)
-- [x] Collection/unlock system (7 of 9 faces earned through real
+- [x] Collection/unlock system (8 of 9 faces earned through real
       interactions: Tokyo timezone, a `:39` glow, tick seconds, hiding
-      the date, enabling sound, hiding seconds, and the Digital face)
+      the date, enabling sound, hiding seconds, Digital format, and
+      Ambient mode)
 
 ## Tech
 
