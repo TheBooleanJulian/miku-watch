@@ -159,6 +159,35 @@ See [CHANGELOG.md](CHANGELOG.md) for the full, version-by-version history —
 every feature added, changed, removed, or fixed, from the initial release
 through the current version.
 
+## Roadmap
+
+Rough, unordered ideas for future versions — none are committed, and the
+project may go in a different direction entirely:
+
+- **More watch faces.** The 13-face collection has room to grow; the
+  ordering scheme (signature → neutral → warm → tech → bold → special
+  edition) already has slots for new categories.
+- **Complications.** A small sub-dial or readout for things like date,
+  day-of-week, or a second timezone, gated behind its own unlock condition.
+- **Face import/export.** Serialize unlock state (and maybe custom faces)
+  to a shareable code or file, so progress isn't stuck to one browser's
+  `localStorage`.
+- **PWA support.** A manifest + service worker so the watch can be
+  installed and used offline, fitting the single-file/no-backend spirit.
+- **Custom face editor.** Expose the CSS custom-property theme system
+  (already the mechanism every face uses) as an in-app color picker for
+  building your own face.
+- **Alarms/timers.** Lightweight additions that fit a watch metaphor
+  without needing a backend.
+- **Accessibility pass.** Keyboard navigation for the crown/timezone
+  picker and face gallery, plus a reduced-motion mode for the hand
+  animations and glow effects.
+- **Automated tests.** Currently untested by design (no build step); a
+  lightweight visual/interaction test harness could catch regressions in
+  hand rotation math and unlock logic as the face count grows.
+
+Ideas and PRs welcome via GitHub issues.
+
 ## Tech
 
 Plain HTML + CSS + JavaScript. No dependencies, no bundler, no external
