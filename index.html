@@ -961,12 +961,25 @@
   }
 
   .watch.face-lunar .dial{
-    background:
-      radial-gradient(circle, rgba(0,0,0,0) 58%, rgba(0,0,0,0.4) 100%),
-      url('assets/accurova_fullmoon.jpg') center/cover no-repeat;
+    background:#000;
     box-shadow:
       inset 0 0 16px rgba(0,0,0,0.35),
       inset 0 0 1px rgba(255,255,255,0.1);
+  }
+
+  .watch.face-lunar .dial::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:url('assets/accurova_fullmoon.jpg') center/cover no-repeat;
+    transform:scale(1.55);
+  }
+
+  .watch.face-lunar .dial::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle, rgba(0,0,0,0) 58%, rgba(0,0,0,0.4) 100%);
   }
 
   .watch.face-lunar .crystal-glare{
@@ -1158,20 +1171,23 @@
       </svg>
 
       <svg class="face-logo flag-logo" viewBox="0 0 32 20" aria-hidden="true">
-        <defs>
-          <clipPath id="flagWaveClip">
-            <path d="M0,2 Q8,0 16,2 Q24,4 32,2 L32,18 Q24,20 16,18 Q8,16 0,18 Z"/>
-          </clipPath>
-        </defs>
-        <g clip-path="url(#flagWaveClip)">
-          <rect x="0" y="0" width="32" height="20" fill="#000000"/>
-          <rect x="0" y="0" width="8" height="7" fill="#ffffff"/>
-          <rect x="16" y="0" width="8" height="7" fill="#ffffff"/>
-          <rect x="8" y="7" width="8" height="6" fill="#ffffff"/>
-          <rect x="24" y="7" width="8" height="6" fill="#ffffff"/>
-          <rect x="0" y="13" width="8" height="7" fill="#ffffff"/>
-          <rect x="16" y="13" width="8" height="7" fill="#ffffff"/>
-        </g>
+        <!-- each cell's curved top/bottom edges are exact De Casteljau subdivisions
+             of the flag's outer wave curves, so the grid ripples in lock-step with
+             the silhouette instead of using straight-edged cells -->
+        <path d="M0,2 Q4,1 8,1 L8,6.33 Q4,6.33 0,7.33 Z" fill="#ffffff"/>
+        <path d="M8,1 Q12,1 16,2 L16,7.33 Q12,7.33 8,6.33 Z" fill="#000000"/>
+        <path d="M16,2 Q20,3 24,3 L24,8.33 Q20,8.33 16,7.33 Z" fill="#ffffff"/>
+        <path d="M24,3 Q28,3 32,2 L32,7.33 Q28,7.33 24,8.33 Z" fill="#000000"/>
+
+        <path d="M0,7.33 Q4,6.33 8,6.33 L8,11.67 Q4,11.67 0,12.67 Z" fill="#000000"/>
+        <path d="M8,6.33 Q12,6.33 16,7.33 L16,12.67 Q12,12.67 8,11.67 Z" fill="#ffffff"/>
+        <path d="M16,7.33 Q20,8.33 24,8.33 L24,13.67 Q20,13.67 16,12.67 Z" fill="#000000"/>
+        <path d="M24,8.33 Q28,8.33 32,7.33 L32,12.67 Q28,12.67 24,13.67 Z" fill="#ffffff"/>
+
+        <path d="M0,12.67 Q4,11.67 8,11.67 L8,17 Q4,17 0,18 Z" fill="#ffffff"/>
+        <path d="M8,11.67 Q12,11.67 16,12.67 L16,18 Q12,18 8,17 Z" fill="#000000"/>
+        <path d="M16,12.67 Q20,13.67 24,13.67 L24,19 Q20,19 16,18 Z" fill="#ffffff"/>
+        <path d="M24,13.67 Q28,13.67 32,12.67 L32,18 Q28,18 24,19 Z" fill="#000000"/>
       </svg>
 
       <div class="hand-shadow shadow-hour" id="hourHandShadow"></div>
