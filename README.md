@@ -43,6 +43,13 @@ All settings persist across reloads via `localStorage`.
   distraction-free clock.
 - Tap/click the watch to exit back to Full mode (Escape also works).
 
+**Sound**
+- Fully synthesized with the Web Audio API — no audio files. A mechanical
+  tick on each second, a crown detent click while dragging, a settings-button
+  click, and a three-note startup chime.
+- Off by default; enabling it in Settings respects browser autoplay policy
+  by only starting audio on a real user gesture.
+
 **Layout**
 - Centered on the page at any size; on wide viewports (≥1180px) the settings
   panel opens to the side of the watch instead of pushing it off-center.
@@ -55,7 +62,7 @@ This project is being built incrementally. Rough phases, in order:
 - [x] Settings panel
 - [x] Multiple watch faces (Seiko Miku, Digital)
 - [x] Ambient display mode
-- [ ] Sound design (mechanical tick, crown/bezel clicks, chime)
+- [x] Sound design (synthesized tick, crown click, UI click, startup chime)
 - [ ] Mobile gestures (swipe between faces, pinch zoom, tap shortcuts)
 - [ ] Capture/share mode (export a shareable image of the watch + moment)
 - [ ] Time Capsule (save a timestamped snapshot as a keepsake)
