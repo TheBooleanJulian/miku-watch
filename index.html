@@ -961,25 +961,12 @@
   }
 
   .watch.face-lunar .dial{
-    background:#000;
+    background:
+      radial-gradient(circle, rgba(0,0,0,0) 58%, rgba(0,0,0,0.4) 100%),
+      url('assets/accurova_fullmoon.jpg') center/cover no-repeat;
     box-shadow:
       inset 0 0 16px rgba(0,0,0,0.35),
       inset 0 0 1px rgba(255,255,255,0.1);
-  }
-
-  .watch.face-lunar .dial::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:url('assets/accurova_fullmoon.jpg') center/cover no-repeat;
-    transform:scale(1.55);
-  }
-
-  .watch.face-lunar .dial::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:radial-gradient(circle, rgba(0,0,0,0) 58%, rgba(0,0,0,0.4) 100%);
   }
 
   .watch.face-lunar .crystal-glare{
