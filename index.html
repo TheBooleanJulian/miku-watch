@@ -44,6 +44,7 @@
   }
 
   .stage{
+    position:relative;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -301,6 +302,56 @@
     --dial:#000000;
   }
 
+  /* light mode: light surrounding page, watch itself stays a dark object */
+  body.light{
+    background:radial-gradient(ellipse at 50% 30%, #ffffff 0%, #eef0f2 45%, #dfe2e6 100%);
+    color:#2a2c30;
+  }
+
+  body.light .caption .subtitle,
+  body.light .tz-readout,
+  body.light .settings-row{
+    color:#4a4d52;
+  }
+
+  body.light .settings-btn{
+    background:#fff;
+    color:#6a6d72;
+    border-color:#c7cbd1;
+  }
+
+  body.light .settings-btn:hover,
+  body.light .settings-btn.open{
+    color:var(--teal-dim);
+    border-color:var(--teal-dim);
+  }
+
+  body.light .settings-panel{
+    background:#ffffff;
+    border-color:#d5d8dc;
+    box-shadow:0 12px 30px rgba(0,0,0,0.12);
+  }
+
+  body.light .settings-row{
+    color:#2a2c30;
+  }
+
+  body.light .settings-panel h2{
+    color:var(--teal-dim);
+  }
+
+  body.light .settings-panel select{
+    background:#fff;
+    color:#2a2c30;
+    border-color:#c7cbd1;
+  }
+
+  body.light .settings-panel select option,
+  body.light .settings-panel select optgroup{
+    background:#fff;
+    color:#2a2c30;
+  }
+
   /* ---------- 39 mode glow pulse ---------- */
   .hand-second.pulse-39{
     filter:brightness(1.8) drop-shadow(0 0 8px rgba(255,47,143,0.9));
@@ -398,6 +449,29 @@
     max-height:560px;
     opacity:1;
     padding:14px 16px 16px;
+  }
+
+  /* desktop: panel opens to the right of the watch instead of below it,
+     so the watch itself never shifts from the page centre */
+  @media (min-width: 1180px){
+    .settings-panel{
+      position:absolute;
+      top:0;
+      left:100%;
+      margin-top:0;
+      margin-left:24px;
+      width:300px;
+      max-height:none;
+      max-width:0;
+      opacity:0;
+      overflow:hidden;
+      transition:max-width 0.35s ease, opacity 0.25s ease, padding 0.35s ease;
+    }
+
+    .settings-panel.open{
+      max-width:300px;
+      opacity:1;
+    }
   }
 
   .settings-panel h2{
@@ -599,16 +673,16 @@
 
       <h2>APPEARANCE</h2>
       <div class="settings-row">
-        <input type="radio" name="appearance" id="appearanceDark" value="dark">
-        <label for="appearanceDark">Dark</label>
+        <input type="radio" name="appearance" id="appearanceOled" value="oled">
+        <label for="appearanceOled">OLED (true black)</label>
       </div>
       <div class="settings-row">
         <input type="radio" name="appearance" id="appearanceNight" value="night">
         <label for="appearanceNight">Night (luminous)</label>
       </div>
       <div class="settings-row">
-        <input type="radio" name="appearance" id="appearanceOled" value="oled">
-        <label for="appearanceOled">OLED (true black)</label>
+        <input type="radio" name="appearance" id="appearanceLight" value="light">
+        <label for="appearanceLight">Light</label>
       </div>
 
       <h2>WATCH</h2>
@@ -1003,9 +1077,10 @@
   function setAppearance(mode){
     watchEl.classList.toggle('night', mode === 'night');
     document.body.classList.toggle('oled', mode === 'oled');
+    document.body.classList.toggle('light', mode === 'light');
     saveSetting('appearance', mode);
   }
-  const savedAppearance = loadSetting('appearance', 'dark');
+  const savedAppearance = loadSetting('appearance', 'oled');
   document.getElementById('appearance' + savedAppearance.charAt(0).toUpperCase() + savedAppearance.slice(1)).checked = true;
   setAppearance(savedAppearance);
   appearanceRadios.forEach(r => r.addEventListener('change', () => { if(r.checked) setAppearance(r.value); }));
