@@ -25,6 +25,10 @@ unlock order:
 - **Snow** 🔒 — white case and dial with a light-blue accent, no glow, and a
   small snowflake in the lower-center of the dial. Unlocks the first time
   you enter Ambient mode.
+- **Lunar** 🔒 — a grey metallic case with a crater-textured dial (synthesized
+  from layered CSS gradients, not an embedded photo), dark hands, and a muted
+  gold accent. Unlocks when you set the timezone to Kiritimati — the very
+  last entry in the dropdown.
 - **Rose Gold** 🔒 — warm rose-gold case and hands on a dark dial. Unlocks
   when you hide the seconds hand.
 - **Sakura** 🔒 — soft cherry-blossom pink, with a few decorative petals
@@ -51,7 +55,7 @@ unlock order:
 Every face is one set of CSS custom-property overrides, so hands, ticks, the
 case, and the hub all retheme automatically — no per-element styling needed
 per face (the 39-mode glow and hex numerals read the same variables, so they
-match too). The face picker shows a live "(x/12) unlocked" count, locks out
+match too). The face picker shows a live "(x/13) unlocked" count, locks out
 radios for faces you haven't earned yet (with a hint on how to unlock them),
 and pops a toast the moment you unlock a new one.
 
@@ -76,7 +80,7 @@ numerals — there's no light/dark toggle, this is the one look.
 
 **Personalization**
 - **Watch face** — a standalone gallery box (see Layout below) holding the
-  twelve-face collection described above. Its own open/closed state is tied
+  thirteen-face collection described above. Its own open/closed state is tied
   to the settings panel's — the gear icon opens and closes both together.
 - **Settings panel (gear icon)** — everything else:
   - **Watch** — Format (Analogue/Digital) and Seconds (Smooth/Tick) as
@@ -137,12 +141,12 @@ This project is being built incrementally. Rough phases, in order:
 - [x] Watchmaker-style presets (fully-themed faces via CSS custom-property
       overrides — a lighter take than a freeform dial/hands/strap/case
       combinator, since this UI has no visible strap to customize)
-- [x] Collection/unlock system (11 of 12 faces earned through real
+- [x] Collection/unlock system (12 of 13 faces earned through real
       interactions: California timezone, a `:39` glow, tick seconds,
       hiding the date, enabling sound, hiding seconds, Digital format,
-      Ambient mode, zero volume, Tokyo timezone, and max volume) - plus
-      a "Reset unlocked faces" button in Settings, with a confirm
-      dialog, to start the collection over
+      Ambient mode, zero volume, Tokyo timezone, max volume, and
+      Kiritimati timezone) - plus a "Reset unlocked faces" button in
+      Settings, with a confirm dialog, to start the collection over
 
 ## Tech
 
