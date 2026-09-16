@@ -759,6 +759,12 @@
         <label for="mode39">Glow at :39s / :39m</label>
       </div>
 
+      <h2>SOUND</h2>
+      <div class="settings-row">
+        <input type="checkbox" id="soundEnabled">
+        <label for="soundEnabled">Enable sound</label>
+      </div>
+
       <h2>DISPLAY</h2>
       <div class="settings-row">
         <input type="radio" name="ambient" id="ambientFull" value="full">
@@ -851,6 +857,7 @@
   const showSecondsCheck = document.getElementById('showSeconds');
   const showTimezoneCheck = document.getElementById('showTimezone');
   const mode39Check = document.getElementById('mode39');
+  const soundCheck = document.getElementById('soundEnabled');
   const tzReadout = document.getElementById('tzReadout');
   const watchFaceRadios = document.querySelectorAll('input[name="watchFace"]');
   const dfTime = document.getElementById('dfTime');
@@ -1069,6 +1076,83 @@
     hourHandShadow.style.transform = `translate(1px,1.5px) rotate(${hour}deg)`;
   }
 
+  // ---------- sound engine (synthesized, no audio files) ----------
+  let audioCtx = null;
+  let startupChimePlayed = false;
+
+  function getAudioCtx(){
+    if(!audioCtx){
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if(!AC) return null;
+      audioCtx = new AC();
+    }
+    return audioCtx;
+  }
+
+  function soundReady(){
+    return !!(soundCheck.checked && audioCtx && audioCtx.state === 'running');
+  }
+
+  function playTone(freq, duration, gainPeak, type){
+    if(!soundReady()) return;
+    const ctx = audioCtx;
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    const t0 = ctx.currentTime;
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(gainPeak, t0 + 0.004);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + duration);
+    osc.connect(g).connect(ctx.destination);
+    osc.start(t0);
+    osc.stop(t0 + duration + 0.02);
+  }
+
+  function playTick(){ playTone(2200, 0.02, 0.06, 'square'); }
+  function playCrownClick(){ playTone(950, 0.03, 0.1, 'square'); }
+  function playUiClick(){ playTone(1500, 0.02, 0.06, 'square'); }
+
+  function playChime(){
+    if(!soundReady()) return;
+    [880, 1108.73, 1318.51].forEach((freq, i) => {
+      const ctx = audioCtx;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      const t0 = ctx.currentTime + i * 0.09;
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.09, t0 + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.6);
+      osc.connect(g).connect(ctx.destination);
+      osc.start(t0);
+      osc.stop(t0 + 0.65);
+    });
+  }
+
+  function ensureAudioReady(thenChime, afterReady){
+    const ctx = getAudioCtx();
+    if(!ctx) return;
+    const proceed = () => {
+      if(thenChime && !startupChimePlayed){ startupChimePlayed = true; playChime(); }
+      if(afterReady) afterReady();
+    };
+    if(ctx.state === 'suspended') ctx.resume().then(proceed);
+    else proceed();
+  }
+
+  soundCheck.checked = loadSetting('sound', '0') === '1';
+  soundCheck.addEventListener('change', () => {
+    saveSetting('sound', soundCheck.checked ? '1' : '0');
+    if(soundCheck.checked) ensureAudioReady(true);
+  });
+  if(soundCheck.checked){
+    window.addEventListener('pointerdown', () => { if(soundCheck.checked) ensureAudioReady(true); }, { once: true });
+  }
+
+  let lastTickSecond = null;
+
   function tick(){
     if(sync){
       const elapsedSec = (performance.now() - sync.startTime) / 1000;
@@ -1102,6 +1186,9 @@
       secondHand.classList.remove('pulse-39');
       minuteHand.classList.remove('pulse-39');
     }
+
+    if(lastTickSecond !== null && s !== lastTickSecond) playTick();
+    lastTickSecond = s;
 
     dowEl.textContent = dow;
     domEl.textContent = dom;
@@ -1206,7 +1293,10 @@
     settingsBtn.classList.toggle('open', panelOpen);
     settingsBtn.setAttribute('aria-expanded', panelOpen ? 'true' : 'false');
   }
-  settingsBtn.addEventListener('click', () => togglePanel());
+  settingsBtn.addEventListener('click', () => {
+    if(soundCheck.checked) ensureAudioReady(false, playUiClick);
+    togglePanel();
+  });
 
   // ---------- crown: drag to cycle timezones, click to open the picker ----------
   const CROWN_STEP_PX = 28;
@@ -1221,6 +1311,7 @@
     if(idx !== tzSelect.selectedIndex){
       tzSelect.selectedIndex = idx;
       tzSelect.dispatchEvent(new Event('change'));
+      playCrownClick();
     }
   }
 
@@ -1262,6 +1353,7 @@
     crownMoved = false;
     crownEl.classList.add('dragging');
     try{ crownEl.setPointerCapture(e.pointerId); }catch(err){}
+    if(soundCheck.checked) ensureAudioReady(false, playCrownClick);
   });
   crownEl.addEventListener('pointermove', onCrownMove);
   crownEl.addEventListener('pointerup', onCrownUp);
