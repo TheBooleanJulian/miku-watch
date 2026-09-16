@@ -970,6 +970,11 @@
     pointer-events:none;
   }
 
+  svg.face-logo.flag-logo{
+    width:15%;
+    height:auto;
+  }
+
   .watch.face-cyan-circuit .chip-logo,
   .watch.face-solar .sun-logo,
   .watch.face-racing .flag-logo{
@@ -1102,15 +1107,21 @@
         </g>
       </svg>
 
-      <svg class="face-logo flag-logo" viewBox="0 0 24 24" aria-hidden="true">
-        <line x1="4" y1="2" x2="4" y2="22" stroke="#ffffff" stroke-width="1.5"/>
-        <rect x="4" y="3" width="4" height="4" fill="#ffffff"/>
-        <rect x="8" y="3" width="4" height="4" fill="#000000"/>
-        <rect x="12" y="3" width="4" height="4" fill="#ffffff"/>
-        <rect x="4" y="7" width="4" height="4" fill="#000000"/>
-        <rect x="8" y="7" width="4" height="4" fill="#ffffff"/>
-        <rect x="12" y="7" width="4" height="4" fill="#000000"/>
-        <rect x="4" y="3" width="12" height="8" fill="none" stroke="#ffffff" stroke-width="0.75"/>
+      <svg class="face-logo flag-logo" viewBox="0 0 32 22" aria-hidden="true">
+        <defs>
+          <clipPath id="flagWaveClip">
+            <path d="M0,4 Q4,0 8,4 Q12,8 16,4 Q20,0 24,4 Q28,8 32,4 L32,18 Q28,14 24,18 Q20,22 16,18 Q12,14 8,18 Q4,22 0,18 Z"/>
+          </clipPath>
+        </defs>
+        <g clip-path="url(#flagWaveClip)">
+          <rect x="0" y="0" width="32" height="22" fill="#000000"/>
+          <rect x="0" y="0" width="8" height="7" fill="#ffffff"/>
+          <rect x="16" y="0" width="8" height="7" fill="#ffffff"/>
+          <rect x="8" y="7" width="8" height="6" fill="#ffffff"/>
+          <rect x="24" y="7" width="8" height="6" fill="#ffffff"/>
+          <rect x="0" y="13" width="8" height="7" fill="#ffffff"/>
+          <rect x="16" y="13" width="8" height="7" fill="#ffffff"/>
+        </g>
       </svg>
 
       <div class="hand-shadow shadow-hour" id="hourHandShadow"></div>
@@ -1699,19 +1710,22 @@
   }
 
   // ---------- watch face collection / unlock system ----------
+  // Permanent display order, grouped by aesthetic: signature -> neutral/white ->
+  // warm/natural -> tech -> bold/special. Ids never change (localStorage keys
+  // and .face-<id> CSS classes depend on them) - only this ordering does.
   const FACES = [
     { id: 'night-miku', label: 'Night Miku', defaultUnlocked: true },
-    { id: 'cyan-circuit', label: 'Cyan Circuit', defaultUnlocked: false, hint: 'Unlock: set timezone to California' },
-    { id: 'anniversary15', label: '15th Anniversary', defaultUnlocked: false, hint: 'Unlock: witness a :39s glow (39 mode)' },
-    { id: 'classic', label: 'Monochrome', defaultUnlocked: false, hint: 'Unlock: switch to Tick seconds' },
     { id: 'pure-white', label: 'Classic', defaultUnlocked: false, hint: 'Unlock: hide the date window' },
-    { id: 'terminal-green', label: 'Terminal Green', defaultUnlocked: false, hint: 'Unlock: enable sound' },
+    { id: 'classic', label: 'Monochrome', defaultUnlocked: false, hint: 'Unlock: switch to Tick seconds' },
+    { id: 'snow', label: 'Snow', defaultUnlocked: false, hint: 'Unlock: enter Ambient mode' },
     { id: 'rose-gold', label: 'Rose Gold', defaultUnlocked: false, hint: 'Unlock: hide the seconds hand' },
     { id: 'sakura', label: 'Sakura', defaultUnlocked: false, hint: 'Unlock: switch to Digital format' },
-    { id: 'snow', label: 'Snow', defaultUnlocked: false, hint: 'Unlock: enter Ambient mode' },
     { id: 'wood', label: 'Wood', defaultUnlocked: false, hint: 'Unlock: set volume to 0' },
+    { id: 'cyan-circuit', label: 'Cyan Circuit', defaultUnlocked: false, hint: 'Unlock: set timezone to California' },
+    { id: 'terminal-green', label: 'Terminal Green', defaultUnlocked: false, hint: 'Unlock: enable sound' },
     { id: 'solar', label: 'Solar', defaultUnlocked: false, hint: 'Unlock: set timezone to Tokyo' },
     { id: 'racing', label: 'Racing', defaultUnlocked: false, hint: 'Unlock: set volume to 100' },
+    { id: 'anniversary15', label: '15th Anniversary', defaultUnlocked: false, hint: 'Unlock: witness a :39s glow (39 mode)' },
   ];
 
   function loadUnlocked(){
