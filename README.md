@@ -9,10 +9,26 @@ Clone the repo and open `index.html` directly in a browser to run it.
 
 ## Features
 
-**Watch faces**
+**Watch face collection**
 - **Seiko Miku** — the default analog face: teal ticks, a magenta "01" marker,
-  a date window, and a wordmark emblem.
-- **Digital** — a cyan/magenta digital readout sharing the same case.
+  a date window, and a wordmark emblem. Unlocked from the start.
+- **Digital** — a cyan/magenta digital readout sharing the same case. Unlocked
+  from the start.
+- **Cyan Circuit** 🔒 — an all-cyan futuristic reskin with a circuit-trace dial.
+  Unlocks when you set the timezone to Tokyo.
+- **Night Miku** 🔒 — a true-black case/dial with permanently boosted luminous
+  ticks. Unlocks the first time you enter Ambient mode.
+- **15th Anniversary** 🔒 — a warm gold accent variant with a "15" marker in
+  place of "01". Unlocks the first time you witness a `:39` second glow
+  (39 mode must be on).
+- **Classic** 🔒 — a conventional silver-case, monochrome-hands watch with no
+  color gimmick. Unlocks when you switch appearance to Light.
+
+Every face is one set of CSS custom-property overrides, so hands, ticks, the
+case, and the hub all retheme automatically — no per-element styling needed
+per face. The Settings panel shows a live "(x/6) unlocked" count, locks out
+radios for faces you haven't earned yet (with a hint on how to unlock them),
+and pops a toast the moment you unlock a new one.
 
 **Mechanical realism**
 - Smooth sweeping second hand (or switch to a discrete per-second "tick" in settings).
@@ -25,7 +41,7 @@ Clone the repo and open `index.html` directly in a browser to run it.
 - All three hands share a single, exact rotation axle.
 
 **Personalization (Settings panel)**
-- **Watch face** — Seiko Miku / Digital.
+- **Watch face** — the six-face collection described above.
 - **Appearance** — OLED (true black), Night (boosted luminous ticks/numeral),
   or Light (a light page with the watch itself staying a dark object).
 - **Watch** — smooth vs. tick seconds, and show/hide date, seconds, and the
@@ -65,6 +81,21 @@ All settings persist across reloads via `localStorage`.
 - Tap the timezone readout to open the timezone picker (same as tapping
   the crown).
 
+**Capture / Share**
+- The Settings → Share → CAPTURE button opens a preview rendered live on
+  `<canvas>` (no DOM-screenshot library) using the current hand angles and
+  the active face's actual theme colors, so the image always matches what's
+  on screen.
+- Pick a crop — 1:1, 4:5, 9:16, or 16:9 — and download the PNG. The preview
+  keeps ticking live while the modal is open.
+
+**Time Capsule**
+- Settings → Time Capsule → "Capture this moment" renders a keepsake image
+  (same renderer, "MOMENT CAPTURED" framing) and saves the finished PNG
+  straight into `localStorage` alongside a timestamp and city.
+- A scrollable list of past capsules shows a thumbnail for each, with a
+  one-tap download or delete. Capped at the 12 most recent.
+
 ## Roadmap
 
 This project is being built incrementally. Rough phases, in order:
@@ -75,10 +106,13 @@ This project is being built incrementally. Rough phases, in order:
 - [x] Ambient display mode
 - [x] Sound design (synthesized tick, crown click, UI click, startup chime)
 - [x] Mobile gestures (swipe faces, swipe-up settings, tilt, pinch zoom, taps)
-- [ ] Capture/share mode (export a shareable image of the watch + moment)
-- [ ] Time Capsule (save a timestamped snapshot as a keepsake)
-- [ ] Watchmaker customizer (build your own dial/hands/strap/case combo)
-- [ ] Collection/unlock system (earn additional faces through use)
+- [x] Capture/share mode (canvas-rendered image, 4 aspect ratios, PNG download)
+- [x] Time Capsule (saved keepsake snapshots with thumbnails)
+- [x] Watchmaker-style presets (4 additional fully-themed faces via CSS
+      custom-property overrides — a lighter take than a freeform dial/hands/
+      strap/case combinator, since this UI has no visible strap to customize)
+- [x] Collection/unlock system (4 of 6 faces earned through real interactions:
+      Tokyo timezone, Ambient mode, a `:39` glow, and Light appearance)
 
 ## Tech
 
