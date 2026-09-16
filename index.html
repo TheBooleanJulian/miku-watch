@@ -8,18 +8,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg-void:#08090b;
-    --bg-void-2:#020203;
+    --bg-void:#000000;
+    --bg-void-2:#000000;
     --case-hi:#3a3d44;
     --case-mid:#1c1e22;
     --case-lo:#0c0d0f;
-    --dial:#0a0b0d;
+    --dial:#000000;
     --dial-edge:#000000;
     --teal:#39c5bb;
     --teal-dim:#1c5652;
     --teal-glow:rgba(57,197,187,0.35);
     --magenta:#ff2f8f;
     --magenta-dim:#7a1948;
+    --magenta-glow:rgba(255,47,143,0.75);
     --ivory:#f3f2ee;
     --ivory-dim:#8b8c8f;
   }
@@ -278,88 +279,14 @@
     pointer-events:none;
   }
 
-  /* ---------- luminous / night mode ---------- */
-  .watch.night #hourTicks,
-  .watch.night #minuteTicks{
+  /* ---------- luminous ticks (always on: OLED true black + luminous) ---------- */
+  #hourTicks,
+  #minuteTicks{
     filter:brightness(1.55) drop-shadow(0 0 3px var(--teal-glow));
-    transition:filter 0.4s ease;
   }
 
-  .watch.night #numeral01{
-    filter:brightness(1.35) drop-shadow(0 0 6px rgba(255,47,143,0.75));
-    transition:filter 0.4s ease;
-  }
-
-  .watch:not(.night) #hourTicks,
-  .watch:not(.night) #minuteTicks,
-  .watch:not(.night) #numeral01{
-    transition:filter 0.4s ease;
-  }
-
-  body.oled{
-    --bg-void:#000000;
-    --bg-void-2:#000000;
-    --dial:#000000;
-  }
-
-  /* light mode: light surrounding page, watch itself stays a dark object */
-  body.light{
-    background:radial-gradient(ellipse at 50% 30%, #ffffff 0%, #eef0f2 45%, #dfe2e6 100%);
-    color:#2a2c30;
-  }
-
-  body.light .caption .subtitle,
-  body.light .tz-readout,
-  body.light .settings-row{
-    color:#4a4d52;
-  }
-
-  body.light .settings-btn{
-    background:#fff;
-    color:#6a6d72;
-    border-color:#c7cbd1;
-  }
-
-  body.light .settings-btn:hover,
-  body.light .settings-btn.open{
-    color:var(--teal-dim);
-    border-color:var(--teal-dim);
-  }
-
-  body.light .settings-panel{
-    background:#ffffff;
-    border-color:#d5d8dc;
-    box-shadow:0 12px 30px rgba(0,0,0,0.12);
-  }
-
-  body.light .settings-row{
-    color:#2a2c30;
-  }
-
-  body.light .settings-panel h2{
-    color:var(--teal-dim);
-  }
-
-  body.light .settings-panel select{
-    background:#fff;
-    color:#2a2c30;
-    border-color:#c7cbd1;
-  }
-
-  body.light .settings-panel select option,
-  body.light .settings-panel select optgroup{
-    background:#fff;
-    color:#2a2c30;
-  }
-
-  body.light .settings-panel::-webkit-scrollbar-thumb{
-    background:#c7cbd1;
-  }
-
-  body.light .toast{
-    background:#fff;
-    color:#2a2c30;
-    border-color:var(--teal-dim);
+  #numeral01{
+    filter:brightness(1.35) drop-shadow(0 0 6px var(--magenta-glow));
   }
 
   /* ---------- ambient display mode ---------- */
@@ -530,7 +457,8 @@
     }
   }
 
-  .settings-panel h2{
+  .settings-panel h2,
+  .face-gallery h2{
     margin:14px 0 6px;
     font-family:'JetBrains Mono', monospace;
     font-size:10px;
@@ -538,8 +466,44 @@
     color:var(--teal);
   }
 
-  .settings-panel h2:first-child{
+  .settings-panel h2:first-child,
+  .face-gallery h2:first-child{
     margin-top:0;
+  }
+
+  /* ---------- watch face gallery (always visible) ---------- */
+  .face-gallery{
+    margin-top:16px;
+    width:min(86vw, 260px);
+    background:#0a0b0d;
+    border:1px solid var(--teal-dim);
+    border-radius:6px;
+    padding:14px 16px 16px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.6);
+  }
+
+  @media (min-width: 1180px){
+    .face-gallery{
+      position:absolute;
+      top:0;
+      right:100%;
+      margin-top:0;
+      margin-right:24px;
+      width:260px;
+      max-height:calc(100vh - 48px);
+      overflow-y:auto;
+    }
+
+    .face-gallery::-webkit-scrollbar{
+      width:6px;
+    }
+    .face-gallery::-webkit-scrollbar-track{
+      background:transparent;
+    }
+    .face-gallery::-webkit-scrollbar-thumb{
+      background:var(--teal-dim);
+      border-radius:3px;
+    }
   }
 
   .settings-row{
@@ -733,29 +697,13 @@
       radial-gradient(circle at 35% 30%, #0b1f22 0%, #020a0c 55%, #000 100%);
   }
 
-  .watch.face-night-miku{
-    --case-hi:#000000;
-    --case-mid:#000000;
-    --case-lo:#000000;
-    --dial:#000000;
-    --dial-edge:#000000;
-  }
-
-  .watch.face-night-miku #hourTicks,
-  .watch.face-night-miku #minuteTicks{
-    filter:brightness(1.5) drop-shadow(0 0 4px var(--teal-glow));
-  }
-
-  .watch.face-night-miku #numeral01{
-    filter:brightness(1.3) drop-shadow(0 0 6px rgba(255,47,143,0.75));
-  }
-
   .watch.face-night-miku .crystal-glare{ display:none; }
   .watch.face-night-miku .bezel-ring{ opacity:0.4; }
 
   .watch.face-anniversary15{
     --magenta:#d9a441;
     --magenta-dim:#7a5a1f;
+    --magenta-glow:rgba(217,164,65,0.6);
     --case-hi:#4a3d28;
     --case-mid:#241d13;
     --case-lo:#100c07;
@@ -768,11 +716,71 @@
     --teal-glow:rgba(0,0,0,0);
     --magenta:#e8e8ea;
     --magenta-dim:#8a8b8d;
+    --magenta-glow:rgba(0,0,0,0);
     --case-hi:#c9cbcf;
     --case-mid:#9a9ca0;
     --case-lo:#6b6d70;
     --dial:#101114;
     --dial-edge:#050506;
+  }
+
+  .watch.face-pure-white{
+    --teal:#1a1a1a;
+    --teal-dim:#4a4a4a;
+    --teal-glow:rgba(0,0,0,0);
+    --magenta:#c81e3a;
+    --magenta-dim:#7a1424;
+    --magenta-glow:rgba(200,30,58,0.35);
+    --case-hi:#ffffff;
+    --case-mid:#eeeeee;
+    --case-lo:#d4d4d4;
+    --dial:#ffffff;
+    --dial-edge:#e4e4e4;
+  }
+
+  .watch.face-pure-white #hourTicks,
+  .watch.face-pure-white #minuteTicks,
+  .watch.face-pure-white #numeral01{
+    filter:none;
+  }
+
+  .watch.face-terminal-green{
+    --teal:#33ff66;
+    --teal-dim:#1a7a33;
+    --teal-glow:rgba(51,255,102,0.5);
+    --magenta:#33ff66;
+    --magenta-dim:#1a7a33;
+    --magenta-glow:rgba(51,255,102,0.6);
+    --case-hi:#141414;
+    --case-mid:#0a0a0a;
+    --case-lo:#000000;
+    --dial:#000000;
+  }
+
+  .watch.face-rose-gold{
+    --teal:#e8b4a0;
+    --teal-dim:#8a5a48;
+    --teal-glow:rgba(232,180,160,0.4);
+    --magenta:#ff6b9d;
+    --magenta-dim:#8a3a5a;
+    --magenta-glow:rgba(255,107,157,0.5);
+    --case-hi:#e8b4a0;
+    --case-mid:#c98a72;
+    --case-lo:#8a5a48;
+    --dial:#1a1210;
+  }
+
+  .watch.face-sakura{
+    --teal:#ffb7c5;
+    --teal-dim:#8a5a68;
+    --teal-glow:rgba(255,183,197,0.4);
+    --magenta:#ff6fa5;
+    --magenta-dim:#8a3a5a;
+    --magenta-glow:rgba(255,111,165,0.5);
+    --case-hi:#4a2e38;
+    --case-mid:#2a1820;
+    --case-lo:#150c10;
+    --dial:#1a1015;
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -824,6 +832,11 @@
     </div>
   </div>
 
+  <div class="face-gallery" id="faceGallery">
+    <h2>WATCH FACE <span class="collection-count" id="collectionCount"></span></h2>
+    <div id="faceList"></div>
+  </div>
+
   <div class="caption">
     <div class="subtitle" id="digitalTime">--:--:--</div>
     <div class="tz-readout">
@@ -835,23 +848,6 @@
     </div>
 
     <div class="settings-panel" id="settingsPanel">
-      <h2>WATCH FACE <span class="collection-count" id="collectionCount"></span></h2>
-      <div id="faceList"></div>
-
-      <h2>APPEARANCE</h2>
-      <div class="settings-row">
-        <input type="radio" name="appearance" id="appearanceOled" value="oled">
-        <label for="appearanceOled">OLED (true black)</label>
-      </div>
-      <div class="settings-row">
-        <input type="radio" name="appearance" id="appearanceNight" value="night">
-        <label for="appearanceNight">Night (luminous)</label>
-      </div>
-      <div class="settings-row">
-        <input type="radio" name="appearance" id="appearanceLight" value="light">
-        <label for="appearanceLight">Light</label>
-      </div>
-
       <h2>WATCH</h2>
       <div class="settings-row">
         <input type="radio" name="secondsMotion" id="secondsSmooth" value="smooth">
@@ -977,7 +973,6 @@
   const crownEl = document.getElementById('crown');
   const settingsBtn = document.getElementById('settingsBtn');
   const settingsPanel = document.getElementById('settingsPanel');
-  const appearanceRadios = document.querySelectorAll('input[name="appearance"]');
   const secondsMotionRadios = document.querySelectorAll('input[name="secondsMotion"]');
   const showDateCheck = document.getElementById('showDate');
   const showSecondsCheck = document.getElementById('showSeconds');
@@ -1271,7 +1266,10 @@
   soundCheck.checked = loadSetting('sound', '0') === '1';
   soundCheck.addEventListener('change', () => {
     saveSetting('sound', soundCheck.checked ? '1' : '0');
-    if(soundCheck.checked) ensureAudioReady(true);
+    if(soundCheck.checked){
+      ensureAudioReady(true);
+      unlockFace('terminal-green');
+    }
   });
   if(soundCheck.checked){
     window.addEventListener('pointerdown', () => { if(soundCheck.checked) ensureAudioReady(true); }, { once: true });
@@ -1345,7 +1343,11 @@
     { id: 'cyan-circuit', label: 'Cyan Circuit', defaultUnlocked: false, hint: 'Unlock: set timezone to Tokyo' },
     { id: 'night-miku', label: 'Night Miku', defaultUnlocked: false, hint: 'Unlock: enter Ambient mode' },
     { id: 'anniversary15', label: '15th Anniversary', defaultUnlocked: false, hint: 'Unlock: witness a :39s glow (39 mode)' },
-    { id: 'classic', label: 'Classic', defaultUnlocked: false, hint: 'Unlock: switch appearance to Light' },
+    { id: 'classic', label: 'Classic', defaultUnlocked: false, hint: 'Unlock: switch to Tick seconds' },
+    { id: 'pure-white', label: 'Pure White', defaultUnlocked: false, hint: 'Unlock: hide the date window' },
+    { id: 'terminal-green', label: 'Terminal Green', defaultUnlocked: false, hint: 'Unlock: enable sound' },
+    { id: 'rose-gold', label: 'Rose Gold', defaultUnlocked: false, hint: 'Unlock: hide the seconds hand' },
+    { id: 'sakura', label: 'Sakura', defaultUnlocked: false, hint: 'Unlock: switch to the Digital face' },
   ];
 
   function loadUnlocked(){
@@ -1385,6 +1387,7 @@
     if(face !== 'seiko') watchEl.classList.add('face-' + face);
     setSpecialHourMarker(face === 'anniversary15' ? 3 : 1, face === 'anniversary15' ? '15' : '01');
     saveSetting('watchFace', face);
+    if(face === 'digital') unlockFace('sakura');
   }
 
   function renderFaceList(){
@@ -1419,18 +1422,6 @@
   renderFaceList();
   setWatchFace(isUnlocked(loadSetting('watchFace', 'seiko')) ? loadSetting('watchFace', 'seiko') : 'seiko');
 
-  function setAppearance(mode){
-    watchEl.classList.toggle('night', mode === 'night');
-    document.body.classList.toggle('oled', mode === 'oled');
-    document.body.classList.toggle('light', mode === 'light');
-    saveSetting('appearance', mode);
-    if(mode === 'light') unlockFace('classic');
-  }
-  const savedAppearance = loadSetting('appearance', 'oled');
-  document.getElementById('appearance' + savedAppearance.charAt(0).toUpperCase() + savedAppearance.slice(1)).checked = true;
-  setAppearance(savedAppearance);
-  appearanceRadios.forEach(r => r.addEventListener('change', () => { if(r.checked) setAppearance(r.value); }));
-
   const savedSecondsMotion = loadSetting('secondsMotion', 'smooth');
   document.getElementById(savedSecondsMotion === 'tick' ? 'secondsTick' : 'secondsSmooth').checked = true;
   watchEl.classList.toggle('tick-seconds', savedSecondsMotion === 'tick');
@@ -1438,20 +1429,22 @@
     if(r.checked){
       watchEl.classList.toggle('tick-seconds', r.value === 'tick');
       saveSetting('secondsMotion', r.value);
+      if(r.value === 'tick') unlockFace('classic');
     }
   }));
 
-  function applyBoolSetting(checkbox, key, className, defaultValue){
+  function applyBoolSetting(checkbox, key, className, defaultValue, onChange){
     const saved = loadSetting(key, defaultValue ? '1' : '0') === '1';
     checkbox.checked = saved;
     watchEl.classList.toggle(className, !saved);
     checkbox.addEventListener('change', () => {
       watchEl.classList.toggle(className, !checkbox.checked);
       saveSetting(key, checkbox.checked ? '1' : '0');
+      if(onChange) onChange(checkbox.checked);
     });
   }
-  applyBoolSetting(showDateCheck, 'showDate', 'hide-date', true);
-  applyBoolSetting(showSecondsCheck, 'showSeconds', 'hide-seconds', true);
+  applyBoolSetting(showDateCheck, 'showDate', 'hide-date', true, (checked) => { if(!checked) unlockFace('pure-white'); });
+  applyBoolSetting(showSecondsCheck, 'showSeconds', 'hide-seconds', true, (checked) => { if(!checked) unlockFace('rose-gold'); });
 
   const savedShowTz = loadSetting('showTimezone', '1') === '1';
   showTimezoneCheck.checked = savedShowTz;
