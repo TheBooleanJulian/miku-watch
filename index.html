@@ -940,6 +940,50 @@
     background:linear-gradient(120deg, rgba(0,60,90,0.06) 0%, rgba(0,60,90,0) 30%);
   }
 
+  .watch.face-lunar{
+    --teal:#2a2a2a;
+    --teal-dim:#6a6a6a;
+    --teal-glow:rgba(0,0,0,0);
+    --magenta:#c9a54a;
+    --magenta-dim:#7a6428;
+    --magenta-glow:rgba(201,165,74,0.35);
+    --case-hi:#c4c4c8;
+    --case-mid:#9a9a9e;
+    --case-lo:#68686c;
+    --dial:#a8a8ac;
+    --dial-edge:#8a8a8e;
+  }
+
+  .watch.face-lunar #hourTicks,
+  .watch.face-lunar #minuteTicks,
+  .watch.face-lunar #numeral01{
+    filter:none;
+  }
+
+  .watch.face-lunar .dial{
+    background:
+      radial-gradient(circle at 30% 25%, rgba(80,80,84,0.55) 0%, transparent 11%),
+      radial-gradient(circle at 55% 40%, rgba(65,65,70,0.6) 0%, transparent 15%),
+      radial-gradient(circle at 70% 60%, rgba(95,95,99,0.4) 0%, transparent 8%),
+      radial-gradient(circle at 25% 65%, rgba(75,75,79,0.5) 0%, transparent 9%),
+      radial-gradient(circle at 60% 20%, rgba(105,105,109,0.35) 0%, transparent 7%),
+      radial-gradient(circle at 40% 82%, rgba(70,70,74,0.45) 0%, transparent 11%),
+      radial-gradient(circle at 80% 35%, rgba(90,90,94,0.4) 0%, transparent 6%),
+      radial-gradient(circle at 35% 45%, rgba(60,60,64,0.5) 0%, transparent 13%),
+      radial-gradient(circle at 15% 30%, rgba(95,95,99,0.3) 0%, transparent 6%),
+      radial-gradient(circle at 65% 78%, rgba(80,80,84,0.4) 0%, transparent 8%),
+      radial-gradient(circle at 45% 15%, rgba(115,115,119,0.3) 0%, transparent 5%),
+      radial-gradient(circle at 85% 55%, rgba(70,70,74,0.35) 0%, transparent 6%),
+      radial-gradient(circle at 50% 50%, #c2c2c6 0%, #a2a2a6 55%, #86868a 100%);
+    box-shadow:
+      inset 0 0 16px rgba(0,0,0,0.35),
+      inset 0 0 1px rgba(255,255,255,0.1);
+  }
+
+  .watch.face-lunar .crystal-glare{
+    background:linear-gradient(120deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 30%);
+  }
+
   .snowflake{
     display:none;
     position:absolute;
@@ -1459,6 +1503,7 @@
     beginTimezoneSync();
     if(tzSelect.value === 'America/Los_Angeles') unlockFace('cyan-circuit');
     if(tzSelect.value === 'Asia/Tokyo') unlockFace('solar');
+    if(tzSelect.value === 'Pacific/Kiritimati') unlockFace('lunar');
   });
 
   function getTimeParts(tz){
@@ -1718,6 +1763,7 @@
     { id: 'pure-white', label: 'Classic', defaultUnlocked: false, hint: 'Unlock: hide the date window' },
     { id: 'classic', label: 'Monochrome', defaultUnlocked: false, hint: 'Unlock: switch to Tick seconds' },
     { id: 'snow', label: 'Snow', defaultUnlocked: false, hint: 'Unlock: enter Ambient mode' },
+    { id: 'lunar', label: 'Lunar', defaultUnlocked: false, hint: 'Unlock: set timezone to Kiritimati' },
     { id: 'rose-gold', label: 'Rose Gold', defaultUnlocked: false, hint: 'Unlock: hide the seconds hand' },
     { id: 'sakura', label: 'Sakura', defaultUnlocked: false, hint: 'Unlock: switch to Digital format' },
     { id: 'wood', label: 'Wood', defaultUnlocked: false, hint: 'Unlock: set volume to 0' },
