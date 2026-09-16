@@ -80,6 +80,8 @@ numerals — there's no light/dark toggle, this is the one look.
   - **Display** — Full/Ambient as a left/right button toggle.
   - **Timezone** — ~65 cities grouped into `<optgroup>`s by current UTC
     offset, plus Local Time and UTC pinned at the top.
+  - **Collection** — a "Reset unlocked faces" button (with a confirm
+    dialog) that re-locks every face except Night Miku.
 
 All settings persist across reloads via `localStorage`.
 
