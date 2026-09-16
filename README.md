@@ -40,8 +40,8 @@ Clone the repo and open `index.html` directly in a browser to run it.
   radiant-sun icon on the lower dial. Unlocks when you set the timezone to
   Tokyo.
 - **Racing** 🔒 — black case and dial, white hour/minute hands and ticks, a
-  bright red second hand/hub/marker, and a diagonal red racing stripe.
-  Unlocks when you push the volume slider to 100.
+  bright red second hand/hub/marker, and a checkered flag icon on the lower
+  dial. Unlocks when you push the volume slider to 100.
 
 Every face is one set of CSS custom-property overrides, so hands, ticks, the
 case, and the hub all retheme automatically — no per-element styling needed
