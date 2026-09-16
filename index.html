@@ -750,6 +750,7 @@
     --teal-glow:rgba(0,234,255,0.45);
     --magenta:#00eaff;
     --magenta-dim:#0a6b78;
+    --magenta-glow:rgba(0,234,255,0.5);
     --case-hi:#12343a;
     --case-mid:#081a1e;
     --case-lo:#020506;
@@ -926,7 +927,7 @@
     top:72%;
     left:50%;
     transform:translate(-50%, -50%);
-    font-size:clamp(14px, 4.5vmin, 22px);
+    font-size:clamp(20px, 6.5vmin, 32px);
     line-height:1;
     color:var(--magenta);
     text-shadow:0 0 6px var(--magenta-glow);
@@ -934,6 +935,23 @@
   }
 
   .watch.face-snow .snowflake{
+    display:block;
+  }
+
+  /* ---------- shared decorative face-logo positioning (centre of lower half) ---------- */
+  .face-logo{
+    display:none;
+    position:absolute;
+    top:72%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    width:9%;
+    height:9%;
+    pointer-events:none;
+  }
+
+  .watch.face-cyan-circuit .chip-logo,
+  .watch.face-solar .sun-logo{
     display:block;
   }
 
@@ -1020,6 +1038,34 @@
       <div class="petal petal-4"></div>
 
       <div class="snowflake">&#10052;</div>
+
+      <svg class="face-logo chip-logo" viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="7" y="7" width="10" height="10" rx="1" fill="none" stroke="var(--teal)" stroke-width="1.5"/>
+        <g stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round">
+          <line x1="9" y1="2" x2="9" y2="7"/>
+          <line x1="15" y1="2" x2="15" y2="7"/>
+          <line x1="9" y1="17" x2="9" y2="22"/>
+          <line x1="15" y1="17" x2="15" y2="22"/>
+          <line x1="2" y1="9" x2="7" y2="9"/>
+          <line x1="2" y1="15" x2="7" y2="15"/>
+          <line x1="17" y1="9" x2="22" y2="9"/>
+          <line x1="17" y1="15" x2="22" y2="15"/>
+        </g>
+      </svg>
+
+      <svg class="face-logo sun-logo" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="5" fill="#ffd54f"/>
+        <g stroke="#ffd54f" stroke-width="1.5" stroke-linecap="round">
+          <line x1="12" y1="1" x2="12" y2="4"/>
+          <line x1="12" y1="20" x2="12" y2="23"/>
+          <line x1="1" y1="12" x2="4" y2="12"/>
+          <line x1="20" y1="12" x2="23" y2="12"/>
+          <line x1="4.2" y1="4.2" x2="6.3" y2="6.3"/>
+          <line x1="17.7" y1="17.7" x2="19.8" y2="19.8"/>
+          <line x1="4.2" y1="19.8" x2="6.3" y2="17.7"/>
+          <line x1="17.7" y1="6.3" x2="19.8" y2="4.2"/>
+        </g>
+      </svg>
 
       <div class="hand-shadow shadow-hour" id="hourHandShadow"></div>
       <div class="hand-shadow shadow-minute" id="minuteHandShadow"></div>
