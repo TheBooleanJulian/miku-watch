@@ -1149,13 +1149,9 @@
       line.setAttribute('x1',x1); line.setAttribute('y1',y1);
       line.setAttribute('x2',x2); line.setAttribute('y2',y2);
       line.setAttribute('stroke-linecap','round');
-      if(hourIndex === 1){
-        line.style.stroke = 'var(--magenta)';
-        line.setAttribute('stroke-width', 3.4);
-      } else {
-        line.style.stroke = 'var(--teal)';
-        line.setAttribute('stroke-width', 2.6);
-      }
+      line.dataset.hourIndex = hourIndex;
+      line.style.stroke = 'var(--teal)';
+      line.setAttribute('stroke-width', 2.6);
       hourTicks.appendChild(line);
     } else {
       const line = document.createElementNS(svgNS,'line');
@@ -1166,16 +1162,23 @@
     }
   }
 
-  // place "01" numeral near the 1 o'clock magenta marker
-  (function(){
-    const angle = (1 * 30) * Math.PI/180;
+  // highlight one hour tick in magenta and place the numeral beside it;
+  // which hour index gets the marker depends on the active watch face
+  function setSpecialHourMarker(hourIndex, text){
+    Array.from(hourTicks.children).forEach(line => {
+      const isSpecial = Number(line.dataset.hourIndex) === hourIndex;
+      line.style.stroke = isSpecial ? 'var(--magenta)' : 'var(--teal)';
+      line.setAttribute('stroke-width', isSpecial ? 3.4 : 2.6);
+    });
+    const angle = (hourIndex * 30) * Math.PI/180;
     const r = 68;
     const x = 100 + r*Math.sin(angle);
     const y = 100 - r*Math.cos(angle) + 4;
     numeral01.setAttribute('x', x);
     numeral01.setAttribute('y', y);
-    numeral01.textContent = '01';
-  })();
+    numeral01.textContent = text;
+  }
+  setSpecialHourMarker(1, '01');
 
   const hourHand = document.getElementById('hourHand');
   const minuteHand = document.getElementById('minuteHand');
@@ -1602,7 +1605,7 @@
     if(!isUnlocked(face)) face = 'seiko';
     FACES.forEach(f => watchEl.classList.remove('face-' + f.id));
     if(face !== 'seiko') watchEl.classList.add('face-' + face);
-    numeral01.textContent = (face === 'anniversary15') ? '15' : '01';
+    setSpecialHourMarker(face === 'anniversary15' ? 3 : 1, face === 'anniversary15' ? '15' : '01');
     saveSetting('watchFace', face);
   }
 
@@ -1919,6 +1922,7 @@
     const ctx = canvas.getContext('2d');
     const theme = getThemeColors();
     const isLight = document.body.classList.contains('light');
+    const specialHourIndex = watchEl.classList.contains('face-anniversary15') ? 3 : 1;
 
     const bg = ctx.createRadialGradient(w/2, h*0.32, 10, w/2, h*0.32, Math.max(w, h)*0.8);
     if(isLight){
@@ -1951,7 +1955,7 @@
       ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
       ctx.lineCap = 'round';
       if(isHour){
-        ctx.strokeStyle = (i/5 === 1) ? theme.magenta : theme.teal;
+        ctx.strokeStyle = (i/5 === specialHourIndex) ? theme.magenta : theme.teal;
         ctx.lineWidth = r*0.018;
       } else {
         ctx.strokeStyle = 'rgba(255,255,255,0.15)';
