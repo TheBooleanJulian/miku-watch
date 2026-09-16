@@ -352,6 +352,10 @@
     color:#2a2c30;
   }
 
+  body.light .settings-panel::-webkit-scrollbar-thumb{
+    background:#c7cbd1;
+  }
+
   /* ---------- ambient display mode ---------- */
   body[data-ambient="ambient"]{
     transition:background 0.6s ease;
@@ -474,9 +478,21 @@
   }
 
   .settings-panel.open{
-    max-height:560px;
+    max-height:min(70vh, 560px);
+    overflow-y:auto;
     opacity:1;
     padding:14px 16px 16px;
+  }
+
+  .settings-panel::-webkit-scrollbar{
+    width:6px;
+  }
+  .settings-panel::-webkit-scrollbar-track{
+    background:transparent;
+  }
+  .settings-panel::-webkit-scrollbar-thumb{
+    background:var(--teal-dim);
+    border-radius:3px;
   }
 
   /* desktop: panel opens to the right of the watch instead of below it,
@@ -498,6 +514,8 @@
 
     .settings-panel.open{
       max-width:300px;
+      max-height:calc(100vh - 48px);
+      overflow-y:auto;
       opacity:1;
     }
   }
