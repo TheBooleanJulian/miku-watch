@@ -16,19 +16,30 @@ Clone the repo and open `index.html` directly in a browser to run it.
   from the start.
 - **Cyan Circuit** 🔒 — an all-cyan futuristic reskin with a circuit-trace dial.
   Unlocks when you set the timezone to Tokyo.
-- **Night Miku** 🔒 — a true-black case/dial with permanently boosted luminous
-  ticks. Unlocks the first time you enter Ambient mode.
-- **15th Anniversary** 🔒 — a warm gold accent variant with a "15" marker in
-  place of "01". Unlocks the first time you witness a `:39` second glow
+- **Night Miku** 🔒 — case/bezel/reflection stripped down to just the glowing
+  face. Unlocks the first time you enter Ambient mode.
+- **15th Anniversary** 🔒 — a warm gold accent variant with a "15" marker on
+  the 3 o'clock tick. Unlocks the first time you witness a `:39` second glow
   (39 mode must be on).
 - **Classic** 🔒 — a conventional silver-case, monochrome-hands watch with no
-  color gimmick. Unlocks when you switch appearance to Light.
+  color gimmick or glow. Unlocks when you switch to Tick seconds.
+- **Pure White** 🔒 — white case and dial, black hands, a red second hand, no
+  glow. Unlocks when you hide the date window.
+- **Terminal Green** 🔒 — monochrome phosphor-green on black, hacker-terminal
+  style. Unlocks when you enable sound.
+- **Rose Gold** 🔒 — warm rose-gold case and hands on a dark dial. Unlocks
+  when you hide the seconds hand.
+- **Sakura** 🔒 — soft cherry-blossom pink. Unlocks when you switch to the
+  Digital face.
 
 Every face is one set of CSS custom-property overrides, so hands, ticks, the
 case, and the hub all retheme automatically — no per-element styling needed
-per face. The Settings panel shows a live "(x/6) unlocked" count, locks out
+per face. The face picker shows a live "(x/10) unlocked" count, locks out
 radios for faces you haven't earned yet (with a hint on how to unlock them),
 and pops a toast the moment you unlock a new one.
+
+The whole app is always true-black (OLED) with permanently luminous ticks and
+numerals — there's no light/dark toggle, this is the one look.
 
 **Mechanical realism**
 - Smooth sweeping second hand (or switch to a discrete per-second "tick" in settings).
@@ -40,10 +51,10 @@ and pops a toast the moment you unlock a new one.
   the second hand keeps ticking live throughout.
 - All three hands share a single, exact rotation axle.
 
-**Personalization (Settings panel)**
-- **Watch face** — the six-face collection described above.
-- **Appearance** — OLED (true black), Night (boosted luminous ticks/numeral),
-  or Light (a light page with the watch itself staying a dark object).
+**Personalization**
+- **Watch face** — a standalone gallery box (see Layout below) holding the
+  ten-face collection described above.
+- **Settings panel (gear icon)** — everything else:
 - **Watch** — smooth vs. tick seconds, and show/hide date, seconds, and the
   timezone readout.
 - **39 mode** — a small identity touch: the second hand glows at `:39` seconds,
@@ -67,11 +78,14 @@ All settings persist across reloads via `localStorage`.
   by only starting audio on a real user gesture.
 
 **Layout**
-- Centered on the page at any size; on wide viewports (≥1180px) the settings
-  panel opens to the side of the watch instead of pushing it off-center.
+- Centered on the page at any size. On wide viewports (≥1180px) the watch
+  face gallery sits in its own persistent box to the *left* of the watch,
+  and the settings panel opens to its *right* — neither shifts the watch
+  from center. On narrower viewports both stack in normal document flow
+  (face gallery above the caption, settings panel collapsible as usual).
 
 **Touch gestures**
-- Swipe left/right on the watch to switch faces (Seiko Miku ↔ Digital).
+- Swipe left/right on the watch to switch between unlocked faces.
 - Swipe up to open the settings panel.
 - Drag a single finger to tilt the watch in 3D for a quick "inspect" look —
   it springs back to flat on release.
@@ -94,8 +108,10 @@ This project is being built incrementally. Rough phases, in order:
 - [x] Watchmaker-style presets (4 additional fully-themed faces via CSS
       custom-property overrides — a lighter take than a freeform dial/hands/
       strap/case combinator, since this UI has no visible strap to customize)
-- [x] Collection/unlock system (4 of 6 faces earned through real interactions:
-      Tokyo timezone, Ambient mode, a `:39` glow, and Light appearance)
+- [x] Collection/unlock system (8 of 10 faces earned through real
+      interactions: Tokyo timezone, Ambient mode, a `:39` glow, tick
+      seconds, hiding the date, enabling sound, hiding seconds, and the
+      Digital face)
 
 ## Tech
 
