@@ -430,6 +430,10 @@
     color:var(--ivory-dim);
   }
 
+  .tz-readout #tzReadout{
+    cursor:pointer;
+  }
+
   .tz-readout .tz-offset{
     color:var(--magenta);
     font-weight:700;
@@ -1328,22 +1332,24 @@
     }
   }
 
+  function openTimezonePicker(){
+    togglePanel(true);
+    requestAnimationFrame(() => {
+      if(typeof tzSelect.showPicker === 'function'){
+        try{ tzSelect.showPicker(); }catch(err){ tzSelect.focus(); }
+      } else {
+        tzSelect.focus();
+      }
+    });
+  }
+
   function onCrownUp(e){
     if(!crownDragging) return;
     crownDragging = false;
     crownEl.classList.remove('dragging');
     crownEl.style.setProperty('--groove-shift', '0px');
     try{ crownEl.releasePointerCapture(e.pointerId); }catch(err){}
-    if(!crownMoved){
-      togglePanel(true);
-      requestAnimationFrame(() => {
-        if(typeof tzSelect.showPicker === 'function'){
-          try{ tzSelect.showPicker(); }catch(err){ tzSelect.focus(); }
-        } else {
-          tzSelect.focus();
-        }
-      });
-    }
+    if(!crownMoved) openTimezonePicker();
   }
 
   crownEl.addEventListener('pointerdown', (e) => {
@@ -1358,6 +1364,108 @@
   crownEl.addEventListener('pointermove', onCrownMove);
   crownEl.addEventListener('pointerup', onCrownUp);
   crownEl.addEventListener('pointercancel', onCrownUp);
+
+  document.getElementById('tzReadout').addEventListener('click', openTimezonePicker);
+
+  // ---------- mobile gestures: swipe faces, swipe-up settings, tap-tilt inspect, pinch zoom, double-tap ambient ----------
+  const FACE_ORDER = ['seiko', 'digital'];
+
+  function cycleWatchFace(dir){
+    const currentFace = watchEl.classList.contains('face-digital') ? 'digital' : 'seiko';
+    const nextFace = FACE_ORDER[(FACE_ORDER.indexOf(currentFace) + dir + FACE_ORDER.length) % FACE_ORDER.length];
+    setWatchFace(nextFace);
+    document.getElementById(nextFace === 'digital' ? 'faceDigital' : 'faceSeiko').checked = true;
+  }
+
+  function handleWatchTap(){
+    if((document.body.dataset.ambient || 'full') === 'ambient'){
+      setDisplayMode('full');
+      return;
+    }
+    const now = Date.now();
+    if(now - lastWatchTapTime < 350){
+      setDisplayMode('ambient');
+      lastWatchTapTime = 0;
+    } else {
+      lastWatchTapTime = now;
+    }
+  }
+
+  let gestureTouch = null; // {startX, startY, startTime, moved}
+  let pinch = null; // {startDist, startScale}
+  let watchScale = 1;
+  let lastWatchTapTime = 0;
+  const TILT_MAX = 9;
+
+  function touchDist(touches){
+    return Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
+  }
+
+  function applyWatchTransform(rx, ry){
+    watchEl.style.transform = `scale(${watchScale}) perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+  }
+
+  function springWatchBack(){
+    watchEl.style.transition = 'transform 0.4s cubic-bezier(.34,1.5,.4,1)';
+    applyWatchTransform(0, 0);
+    setTimeout(() => { watchEl.style.transition = ''; }, 400);
+  }
+
+  watchEl.addEventListener('touchstart', (e) => {
+    if(e.target.closest('#crown')) return;
+    if(e.touches.length === 2){
+      pinch = { startDist: touchDist(e.touches), startScale: watchScale };
+      gestureTouch = null;
+    } else if(e.touches.length === 1){
+      const t = e.touches[0];
+      gestureTouch = { startX: t.clientX, startY: t.clientY, startTime: Date.now(), moved: false };
+    }
+  }, { passive: true });
+
+  watchEl.addEventListener('touchmove', (e) => {
+    if(pinch && e.touches.length === 2){
+      watchScale = Math.min(1.8, Math.max(0.85, pinch.startScale * (touchDist(e.touches) / pinch.startDist)));
+      watchEl.style.transition = 'none';
+      applyWatchTransform(0, 0);
+      return;
+    }
+    if(gestureTouch && e.touches.length === 1){
+      const t = e.touches[0];
+      const dx = t.clientX - gestureTouch.startX;
+      const dy = t.clientY - gestureTouch.startY;
+      if(Math.abs(dx) > 6 || Math.abs(dy) > 6) gestureTouch.moved = true;
+      const ry = Math.max(-TILT_MAX, Math.min(TILT_MAX, dx * 0.12));
+      const rx = Math.max(-TILT_MAX, Math.min(TILT_MAX, -dy * 0.12));
+      watchEl.style.transition = 'none';
+      applyWatchTransform(rx, ry);
+    }
+  }, { passive: true });
+
+  watchEl.addEventListener('touchend', (e) => {
+    if(pinch){
+      pinch = null;
+      e.preventDefault();
+      return;
+    }
+    if(!gestureTouch) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - gestureTouch.startX;
+    const dy = t.clientY - gestureTouch.startY;
+    const elapsed = Date.now() - gestureTouch.startTime;
+    const wasTap = !gestureTouch.moved && elapsed < 300;
+
+    springWatchBack();
+    e.preventDefault();
+
+    if(wasTap){
+      handleWatchTap();
+    } else if(Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4){
+      cycleWatchFace(dx > 0 ? -1 : 1);
+    } else if(dy < -55 && Math.abs(dy) > Math.abs(dx) * 1.4){
+      togglePanel(true);
+    }
+    gestureTouch = null;
+  }, { passive: false });
 </script>
 
 </body>
