@@ -8,11 +8,18 @@ features, patch bumps are fixes/tweaks — anything may still change).
 ## [0.15.0] - 2026-09-18
 
 ### Added
-- **Eclipse** watch face (14 total): a black case with a real annular
-  solar eclipse photo as the dial, dark hands, and a fiery orange accent.
-  Unlocks when you set the timezone to Chicago.
+- **Eclipse** watch face (14 total): a metallic orange bezel with a real
+  annular solar eclipse photo as the dial, dark hands, and a fiery orange
+  accent. Unlocks when you set the timezone to Chicago.
 - Footer credit updated: "Built by TheBooleanJulian. Moon and solar eclipse
   photos by Accurova."
+
+### Fixed
+- The eclipse photo's first crop centered the bounding box of the visible
+  crescent's bright pixels, but a thin crescent's visual mass leans toward
+  its thick side, so that bbox center actually sat to the side of where the
+  eclipsed sun really is. Fit a circle to the arc (least-squares) to recover
+  the true sun-disc center and re-cropped square around that instead.
 
 ## [0.14.0] - 2026-09-17
 
