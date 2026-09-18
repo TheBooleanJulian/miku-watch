@@ -8,9 +8,10 @@ features, patch bumps are fixes/tweaks — anything may still change).
 ## [0.15.0] - 2026-09-18
 
 ### Added
-- **Eclipse** watch face (14 total): a metallic orange bezel with a real
-  annular solar eclipse photo as the dial, dark hands, and a fiery orange
-  accent. Unlocks when you set the timezone to Chicago.
+- **Eclipse** watch face (14 total): a bezel split metallic orange on the
+  left and metallic black on the right (soft gradient boundaries at 42°
+  and 198°), a real annular solar eclipse photo as the dial, dark hands,
+  and a fiery orange accent. Unlocks when you set the timezone to Chicago.
 - Footer credit updated: "Built by TheBooleanJulian. Moon and solar eclipse
   photos by Accurova."
 

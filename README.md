@@ -66,7 +66,7 @@ unlock order:
 | **Terminal Green** | Phosphor-green monochrome, white second hand | Enable sound |
 | **Solar** | Silicon-photovoltaic-cell grid dial, blue + amber, sun icon | Set timezone to Tokyo |
 | **Racing** | Black case, white hands, red accents, checkered-flag icon | Set volume to 100 |
-| **Eclipse** | Real annular solar eclipse photo as the dial, fiery orange accent | Set timezone to Chicago |
+| **Eclipse** | Bezel split orange/black, real annular solar eclipse photo as the dial, fiery orange accent | Set timezone to Chicago |
 | **15th Anniversary** | Warm gold accent, "15" marker on the 3 o'clock tick | Witness a `:39` second glow (39 mode) |
 
 Every face is one set of CSS custom-property overrides, so hands, ticks, the
