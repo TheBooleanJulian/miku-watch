@@ -985,8 +985,25 @@
     --case-hi:#ffb066;
     --case-mid:#d9782a;
     --case-lo:#7a3c10;
+    --case2-hi:#3a3a3a;
+    --case2-mid:#1a1a1a;
+    --case2-lo:#000000;
     --dial:#050302;
     --dial-edge:#000000;
+    background:
+      conic-gradient(from 0deg,
+        var(--case-hi) 0deg,
+        var(--case-mid) 20deg,
+        var(--case-lo) 33deg,
+        var(--case2-lo) 63deg,
+        var(--case2-mid) 100deg,
+        var(--case2-hi) 140deg,
+        var(--case2-mid) 180deg,
+        var(--case2-lo) 207deg,
+        var(--case-lo) 237deg,
+        var(--case-hi) 280deg,
+        var(--case-mid) 320deg,
+        var(--case-hi) 360deg);
   }
 
   .watch.face-eclipse #hourTicks,
