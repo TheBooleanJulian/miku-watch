@@ -5,6 +5,15 @@ All notable changes to this project are documented here. Format follows
 [Semantic Versioning](https://semver.org/) (pre-1.0: minor bumps are new
 features, patch bumps are fixes/tweaks — anything may still change).
 
+## [0.15.0] - 2026-09-18
+
+### Added
+- **Solar Eclipse** watch face (14 total): a black case with a real annular
+  solar eclipse photo as the dial, dark hands, and a fiery orange accent.
+  Unlocks when you set the timezone to Chicago.
+- Footer credit updated: "Built by TheBooleanJulian. Moon and solar eclipse
+  photos by Accurova."
+
 ## [0.14.0] - 2026-09-17
 
 ### Added

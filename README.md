@@ -5,7 +5,7 @@ teal-and-magenta dial built as an anniversary piece, with a growing set of
 mechanical realism, personalization, and a collectible watch-face system layered
 on top.
 
-**Current version: 0.14.0** — see [CHANGELOG.md](CHANGELOG.md) for the full
+**Current version: 0.15.0** — see [CHANGELOG.md](CHANGELOG.md) for the full
 version history.
 
 ## Screenshots
@@ -20,7 +20,7 @@ showing lock state and unlock hints for faces you haven't earned yet:
 
 <img src="assets/screenshots/mobile-overview.png" alt="Mobile layout: watch on top, face gallery stacked below" width="360">
 
-**A few of the thirteen watch faces:**
+**A few of the fourteen watch faces:**
 
 | Racing | Sakura | Lunar | Cyan Circuit |
 |:---:|:---:|:---:|:---:|
@@ -34,8 +34,8 @@ here shows the unlock system in action — entering Ambient just unlocked Snow):
 ## Getting Started
 
 No build step, no framework, no external libraries: it's one `index.html`
-with inline CSS and vanilla JS, plus a single image asset (the Lunar face's
-moon photo) in `assets/`.
+with inline CSS and vanilla JS, plus two image assets (the Lunar face's moon
+photo and the Solar Eclipse face's eclipse photo) in `assets/`.
 
 ```
 git clone https://github.com/TheBooleanJulian/miku-watch.git
@@ -66,12 +66,13 @@ unlock order:
 | **Terminal Green** | Phosphor-green monochrome, white second hand | Enable sound |
 | **Solar** | Silicon-photovoltaic-cell grid dial, blue + amber, sun icon | Set timezone to Tokyo |
 | **Racing** | Black case, white hands, red accents, checkered-flag icon | Set volume to 100 |
+| **Solar Eclipse** | Real annular solar eclipse photo as the dial, fiery orange accent | Set timezone to Chicago |
 | **15th Anniversary** | Warm gold accent, "15" marker on the 3 o'clock tick | Witness a `:39` second glow (39 mode) |
 
 Every face is one set of CSS custom-property overrides, so hands, ticks, the
 case, and the hub all retheme automatically — no per-element styling needed
 per face (the 39-mode glow and hex numerals read the same variables, so they
-match too). The face picker shows a live "(x/13) unlocked" count, locks out
+match too). The face picker shows a live "(x/14) unlocked" count, locks out
 radios for faces you haven't earned yet (with a hint on how to unlock them),
 and pops a toast the moment you unlock a new one. A "Reset unlocked faces"
 button (Settings → Collection) re-locks everything except Night Miku, with a
@@ -101,7 +102,7 @@ current theme rather than having its own fixed look.
 ### Personalization
 
 - **Watch face** — a standalone gallery box (see Layout below) holding the
-  thirteen-face collection. Its open/closed state is tied to the settings
+  fourteen-face collection. Its open/closed state is tied to the settings
   panel's — the gear icon opens and closes both together.
 - **Settings panel (gear icon)** — everything else:
   - **Watch** — Format (Analogue/Digital) and Seconds (Smooth/Tick) as
@@ -164,7 +165,7 @@ through the current version.
 Rough, unordered ideas for future versions — none are committed, and the
 project may go in a different direction entirely:
 
-- **More watch faces.** The 13-face collection has room to grow; the
+- **More watch faces.** The 14-face collection has room to grow; the
   ordering scheme (signature → neutral → warm → tech → bold → special
   edition) already has slots for new categories.
 - **Complications.** A small sub-dial or readout for things like date,
@@ -198,5 +199,6 @@ hardcoded date logic.
 
 ## Credits
 
-Built by TheBooleanJulian. Moon photo (Lunar face) by Accurova. Both are
-credited in a small footer on the page itself.
+Built by TheBooleanJulian. Moon photo (Lunar face) and solar eclipse photo
+(Solar Eclipse face) by Accurova. All are credited in a small footer on the
+page itself.
