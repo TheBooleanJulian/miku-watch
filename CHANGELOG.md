@@ -8,7 +8,7 @@ features, patch bumps are fixes/tweaks — anything may still change).
 ## [0.15.0] - 2026-09-18
 
 ### Added
-- **Solar Eclipse** watch face (14 total): a black case with a real annular
+- **Eclipse** watch face (14 total): a black case with a real annular
   solar eclipse photo as the dial, dark hands, and a fiery orange accent.
   Unlocks when you set the timezone to Chicago.
 - Footer credit updated: "Built by TheBooleanJulian. Moon and solar eclipse

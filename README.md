@@ -35,7 +35,7 @@ here shows the unlock system in action — entering Ambient just unlocked Snow):
 
 No build step, no framework, no external libraries: it's one `index.html`
 with inline CSS and vanilla JS, plus two image assets (the Lunar face's moon
-photo and the Solar Eclipse face's eclipse photo) in `assets/`.
+photo and the Eclipse face's eclipse photo) in `assets/`.
 
 ```
 git clone https://github.com/TheBooleanJulian/miku-watch.git
@@ -66,7 +66,7 @@ unlock order:
 | **Terminal Green** | Phosphor-green monochrome, white second hand | Enable sound |
 | **Solar** | Silicon-photovoltaic-cell grid dial, blue + amber, sun icon | Set timezone to Tokyo |
 | **Racing** | Black case, white hands, red accents, checkered-flag icon | Set volume to 100 |
-| **Solar Eclipse** | Real annular solar eclipse photo as the dial, fiery orange accent | Set timezone to Chicago |
+| **Eclipse** | Real annular solar eclipse photo as the dial, fiery orange accent | Set timezone to Chicago |
 | **15th Anniversary** | Warm gold accent, "15" marker on the 3 o'clock tick | Witness a `:39` second glow (39 mode) |
 
 Every face is one set of CSS custom-property overrides, so hands, ticks, the
@@ -200,5 +200,5 @@ hardcoded date logic.
 ## Credits
 
 Built by TheBooleanJulian. Moon photo (Lunar face) and solar eclipse photo
-(Solar Eclipse face) by Accurova. All are credited in a small footer on the
+(Eclipse face) by Accurova. All are credited in a small footer on the
 page itself.
