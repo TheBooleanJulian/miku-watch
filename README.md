@@ -1,9 +1,13 @@
 # Miku Watch
 
-A single-file, dependency-free analog watch face in the browser — a Seiko-inspired
-teal-and-magenta dial built as an anniversary piece, with a growing set of
-mechanical realism, personalization, and a collectible watch-face system layered
-on top.
+**A single-file, dependency-free analog watch face in the browser — a Seiko-inspired teal-and-magenta dial with mechanical realism, personalization, and a 14-face collectible system.**
+
+![HTML](https://img.shields.io/badge/-HTML-E34F26?logo=html5&logoColor=white)
+![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=black)
+![License](https://img.shields.io/badge/license-AGPLv3%20%2B%20Commercial-00D4C8.svg)
+
+Built as an anniversary piece, with a growing set of mechanical realism,
+personalization, and a collectible watch-face system layered on top.
 
 **Current version: 0.15.0** — see [CHANGELOG.md](CHANGELOG.md) for the full
 version history.
@@ -197,8 +201,21 @@ database via the browser's ICU implementation) for timezone-aware time
 formatting — including historical and scheduled DST rules — rather than any
 hardcoded date logic.
 
+## License
+
+This project is dual licensed.
+
+- Community Edition — [GNU Affero General Public License v3 (AGPLv3)](LICENSE). Free to use, modify, and self-host. If you distribute a modified version or run it as a network service, you must make the corresponding source available.
+- Commercial License — for organisations that want to embed, modify, or distribute this software without AGPLv3's obligations. See [COMMERCIAL-LICENSE.md](COMMERCIAL-LICENSE.md).
+
 ## Credits
 
 Built by TheBooleanJulian. Moon photo (Lunar face) and solar eclipse photo
 (Eclipse face) by Accurova. All are credited in a small footer on the
 page itself.
+
+---
+
+<div align="center">
+<sub>Built by <a href="https://github.com/TheBooleanJulian">@TheBooleanJulian</a></sub>
+</div>
